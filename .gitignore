@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# convex-generated agent/skill scaffolding
+/.agents/
+/.claude/
+/CLAUDE.md
+/AGENTS.md
+/skills-lock.json
+/convex/tsconfig.json
+/convex/_generated/ai/
