@@ -5,6 +5,7 @@ import CategoryRail from "@/components/CategoryRail";
 import ProductCarousel from "@/components/ProductCarousel";
 import WhyFactoryBuyo from "@/components/WhyFactoryBuyo";
 import Testimonials from "@/components/Testimonials";
+import HeroSlides from "@/components/HeroSlides";
 
 const heroCollage = [
   "/placeholders/asus-rog-strix-g16.svg",
@@ -57,6 +58,8 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        <HeroSlides />
       </section>
 
       <TrustBadges />
