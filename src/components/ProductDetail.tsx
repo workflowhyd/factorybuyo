@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import StorageImage from "@/components/StorageImage";
 import { useQuery } from "convex/react";
 import { Check } from "lucide-react";
 import { api } from "../../convex/_generated/api";
@@ -68,7 +68,7 @@ export default function ProductDetail() {
         <div>
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
             {product.images[activeImage] && (
-              <Image
+              <StorageImage
                 src={product.images[activeImage]}
                 alt={product.name}
                 fill
@@ -87,7 +87,7 @@ export default function ProductDetail() {
                     activeImage === i ? "border-brand" : "border-transparent"
                   }`}
                 >
-                  <Image src={img} alt="" fill unoptimized className="object-cover" />
+                  <StorageImage src={img} alt="" fill unoptimized className="object-cover" />
                 </button>
               ))}
             </div>

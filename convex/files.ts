@@ -1,4 +1,4 @@
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { requireAdmin } from "./auth";
 
@@ -10,10 +10,9 @@ export const generateUploadUrl = mutation({
   },
 });
 
-export const getUrl = mutation({
-  args: { token: v.string(), storageId: v.id("_storage") },
-  handler: async (ctx, { token, storageId }) => {
-    await requireAdmin(ctx, token);
+export const getPublicUrl = query({
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, { storageId }) => {
     return await ctx.storage.getUrl(storageId);
   },
 });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import StorageImage from "@/components/StorageImage";
 import { X } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -66,7 +66,6 @@ export default function ProductForm({
   const addProduct = useMutation(api.products.add);
   const updateProduct = useMutation(api.products.update);
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
-  const getUrl = useMutation(api.files.getUrl);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -87,10 +86,10 @@ export default function ProductForm({
         });
         if (!res.ok) throw new Error("Upload failed");
         const { storageId } = await res.json();
-        const url = await getUrl({ token, storageId });
-        if (url) {
-          setForm((prev) => ({ ...prev, images: [...prev.images, url] }));
-        }
+        setForm((prev) => ({
+          ...prev,
+          images: [...prev.images, `storage:${storageId}`],
+        }));
       }
     } catch {
       setError("Image upload failed. Please try again.");
@@ -297,7 +296,7 @@ export default function ProductForm({
         <div className="flex flex-wrap gap-3">
           {form.images.map((img, i) => (
             <div key={img + i} className="relative h-20 w-24 overflow-hidden rounded-lg border">
-              <Image src={img} alt="" fill unoptimized className="object-cover" />
+              <StorageImage src={img} alt="" fill unoptimized className="object-cover" />
               <button
                 type="button"
                 onClick={() => removeImage(i)}

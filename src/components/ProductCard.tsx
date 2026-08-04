@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Heart } from "lucide-react";
+import StorageImage from "@/components/StorageImage";
 import { formatINR, discountPercent } from "@/lib/format";
 import type { Doc } from "../../convex/_generated/dataModel";
 
@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
         {image && (
-          <Image
+          <StorageImage
             src={image}
             alt={product.name}
             fill
