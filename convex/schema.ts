@@ -31,4 +31,11 @@ export default defineSchema({
     token: v.string(),
     expiresAt: v.number(),
   }).index("by_token", ["token"]),
+
+  testimonials: defineTable({
+    name: v.string(),
+    quote: v.string(),
+    rating: v.number(),
+    createdAt: v.number(),
+  }),
 });

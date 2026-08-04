@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRef } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -24,12 +25,14 @@ export default function ProductCarousel({
   category,
   promoHeadline,
   promoSub,
+  promoImage,
 }: {
   title: string;
   href: string;
   category: "gaming" | "refurbished";
   promoHeadline: string;
   promoSub: string;
+  promoImage: string;
 }) {
   const products = useQuery(api.products.list, { category });
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -62,10 +65,12 @@ export default function ProductCarousel({
         >
           <Link
             href={href}
-            className="relative flex w-[260px] flex-shrink-0 snap-start flex-col justify-end overflow-hidden rounded-xl bg-[linear-gradient(135deg,#3a0e6d_0%,#7d1f83_50%,#e6127d_100%)] p-5 text-white"
+            className="relative flex w-[260px] flex-shrink-0 snap-start flex-col justify-end overflow-hidden rounded-xl p-5 text-white"
           >
-            <p className="text-xl font-extrabold leading-tight">{promoHeadline}</p>
-            <p className="mt-2 text-sm text-white/80">{promoSub}</p>
+            <Image src={promoImage} alt="" fill unoptimized className="object-cover" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(58,14,109,0.15)_0%,rgba(58,14,109,0.9)_100%)]" />
+            <p className="relative text-xl font-extrabold leading-tight">{promoHeadline}</p>
+            <p className="relative mt-2 text-sm text-white/80">{promoSub}</p>
           </Link>
 
           {products === undefined &&

@@ -13,6 +13,7 @@ import type * as files from "../files.js";
 import type * as products from "../products.js";
 import type * as seed from "../seed.js";
 import type * as seedData from "../seedData.js";
+import type * as testimonials from "../testimonials.js";
 
 import type {
   ApiFromModules,
@@ -26,6 +27,7 @@ declare const fullApi: ApiFromModules<{
   products: typeof products;
   seed: typeof seed;
   seedData: typeof seedData;
+  testimonials: typeof testimonials;
 }>;
 
 /**

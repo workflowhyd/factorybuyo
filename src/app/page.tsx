@@ -1,8 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import TrustBadges from "@/components/TrustBadges";
 import CategoryRail from "@/components/CategoryRail";
 import ProductCarousel from "@/components/ProductCarousel";
 import WhyFactoryBuyo from "@/components/WhyFactoryBuyo";
+import Testimonials from "@/components/Testimonials";
+
+const heroCollage = [
+  "/placeholders/asus-rog-strix-g16.svg",
+  "/placeholders/dell-latitude-7400.svg",
+  "/placeholders/acer-predator-helios-neo-16.svg",
+  "/placeholders/lenovo-thinkpad-x1-carbon-g6.svg",
+];
 
 export default function Home() {
   return (
@@ -39,7 +48,13 @@ export default function Home() {
             </div>
           </div>
           <div className="hidden md:block">
-            <div className="aspect-[4/3] rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm" />
+            <div className="grid aspect-[4/3] grid-cols-2 gap-2 rounded-2xl border border-white/20 bg-white/10 p-2 backdrop-blur-sm">
+              {heroCollage.map((src) => (
+                <div key={src} className="relative overflow-hidden rounded-xl bg-slate-900/40">
+                  <Image src={src} alt="" fill unoptimized className="object-cover" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -54,6 +69,7 @@ export default function Home() {
         category="gaming"
         promoHeadline="Built to play."
         promoSub="Hand-picked gaming laptops with the specs that actually matter."
+        promoImage="/placeholders/asus-rog-strix-g16.svg"
       />
       <ProductCarousel
         title="Certified Refurbished Laptops"
@@ -61,9 +77,12 @@ export default function Home() {
         category="refurbished"
         promoHeadline="Like new, less the price."
         promoSub="40-point tested, 6-month warranty, a fraction of the cost."
+        promoImage="/placeholders/dell-latitude-7400.svg"
       />
 
       <WhyFactoryBuyo />
+
+      <Testimonials />
 
       <TrustBadges />
     </div>
