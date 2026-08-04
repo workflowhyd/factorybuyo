@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "convex/react";
+import { Check } from "lucide-react";
 import { api } from "../../convex/_generated/api";
 import { formatINR, discountPercent } from "@/lib/format";
 import WhatsAppReserveButton from "@/components/WhatsAppReserveButton";
@@ -157,10 +158,17 @@ export default function ProductDetail() {
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3 text-xs text-slate-500">
-            <p>✓ 6-month warranty</p>
-            <p>✓ Certified &amp; tested</p>
-            <p>✓ Pan-India delivery</p>
-            <p>✓ Reserve, no card needed</p>
+            {[
+              "6-month warranty",
+              "Certified & tested",
+              "Pan-India delivery",
+              "Reserve, no card needed",
+            ].map((item) => (
+              <p key={item} className="flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5 flex-shrink-0 text-brand" strokeWidth={2.5} />
+                {item}
+              </p>
+            ))}
           </div>
         </div>
       </div>

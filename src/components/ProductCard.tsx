@@ -3,26 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Heart } from "lucide-react";
 import { formatINR, discountPercent } from "@/lib/format";
 import type { Doc } from "../../convex/_generated/dataModel";
-
-function HeartIcon({ filled, ...props }: { filled: boolean } & React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill={filled ? "currentColor" : "none"}
-      stroke="currentColor"
-      strokeWidth={1.8}
-      {...props}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 20.5s-7.5-4.6-10-9.3C0.3 7.6 2 4 5.6 4c2 0 3.5 1 4.4 2.4C10.9 5 12.4 4 14.4 4 18 4 19.7 7.6 22 11.2c-2.5 4.7-10 9.3-10 9.3Z"
-      />
-    </svg>
-  );
-}
 
 export default function ProductCard({ product }: { product: Doc<"products"> }) {
   const discount = discountPercent(product.price, product.originalPrice);
@@ -32,7 +15,7 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
   return (
     <Link
       href={`/product?slug=${product.slug}`}
-      className="group block overflow-hidden rounded-xl border border-slate-200 bg-white transition-shadow hover:shadow-lg"
+      className="group block overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
         {image && (
@@ -51,9 +34,12 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
             e.preventDefault();
             setSaved((v) => !v);
           }}
-          className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-slate-700 shadow-sm hover:text-brand"
+          className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-slate-700 shadow-sm transition-colors hover:text-brand"
         >
-          <HeartIcon filled={saved} className={`h-4 w-4 ${saved ? "text-brand" : ""}`} />
+          <Heart
+            className={`h-4 w-4 ${saved ? "fill-brand text-brand" : ""}`}
+            strokeWidth={1.8}
+          />
         </button>
         {discount && (
           <span className="absolute left-3 top-3 rounded-full bg-brand px-2 py-1 text-xs font-bold text-white">

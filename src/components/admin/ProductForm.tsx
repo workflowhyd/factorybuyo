@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { X } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Doc } from "../../../convex/_generated/dataModel";
@@ -300,9 +301,9 @@ export default function ProductForm({
               <button
                 type="button"
                 onClick={() => removeImage(i)}
-                className="absolute right-1 top-1 rounded-full bg-black/70 px-1.5 text-xs text-white"
+                className="absolute right-1 top-1 rounded-full bg-black/70 p-1 text-white"
               >
-                ✕
+                <X className="h-3 w-3" strokeWidth={2.5} />
               </button>
             </div>
           ))}
