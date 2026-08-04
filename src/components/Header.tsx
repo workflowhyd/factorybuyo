@@ -50,7 +50,7 @@ export default function Header() {
 
       <div className="border-b border-slate-200">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
-          <Link href="/" className="relative h-9 w-36 flex-shrink-0 sm:h-10 sm:w-40">
+          <Link href="/" className="relative h-14 w-48 flex-shrink-0 sm:h-16 sm:w-56">
             <Image
               src="/logo.png"
               alt="FactoryBuyo"
