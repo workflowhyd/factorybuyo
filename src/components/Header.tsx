@@ -1,16 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Menu, Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-
-const navLinks = [
-  { href: "/gaming-laptops", label: "Gaming Laptops" },
-  { href: "/refurbished-laptops", label: "Refurbished Laptops" },
-];
+import CategoryBanner from "@/components/CategoryBanner";
 
 function SearchBar({ className }: { className?: string }) {
   const router = useRouter();
@@ -45,81 +42,52 @@ function SearchBar({ className }: { className?: string }) {
 }
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
+    <header className="sticky top-0 z-50 bg-white">
       <div className="bg-brand text-white text-xs sm:text-sm font-semibold text-center py-2 px-4">
         Reserve your laptop online, pay &amp; collect at pickup — no card details needed.
       </div>
 
-      <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
-        <button
-          className="md:hidden rounded-md p-2 -ml-2 text-slate-700 transition-colors hover:bg-slate-100"
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+      <div className="border-b border-slate-200">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
+          <Link href="/" className="relative h-9 w-36 flex-shrink-0 sm:h-10 sm:w-40">
+            <Image
+              src="/logo.png"
+              alt="FactoryBuyo"
+              fill
+              unoptimized
+              priority
+              className="object-contain object-left"
+            />
+          </Link>
 
-        <Link
-          href="/"
-          className="flex-1 text-center text-xl font-extrabold tracking-tight text-slate-900 md:flex-none md:text-left"
-        >
-          Factory<span className="text-brand">Buyo</span>
-        </Link>
+          <SearchBar className="hidden md:flex flex-1 max-w-md" />
 
-        <SearchBar className="hidden md:flex flex-1 max-w-md" />
+          <a
+            href={buildGeneralWhatsAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          >
+            Chat on WhatsApp
+          </a>
+          <a
+            href={buildGeneralWhatsAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
+            className="ml-auto rounded-full bg-whatsapp p-2.5 text-white sm:hidden"
+          >
+            <WhatsAppIcon className="h-5 w-5" />
+          </a>
+        </div>
 
-        <nav className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="whitespace-nowrap text-sm font-medium text-slate-700 hover:text-brand transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <a
-          href={buildGeneralWhatsAppLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-        >
-          Chat on WhatsApp
-        </a>
-        <a
-          href={buildGeneralWhatsAppLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Chat on WhatsApp"
-          className="sm:hidden rounded-full bg-whatsapp p-2.5 text-white"
-        >
-          <WhatsAppIcon className="h-5 w-5" />
-        </a>
+        <div className="px-4 pb-3 md:hidden">
+          <SearchBar />
+        </div>
       </div>
 
-      <div className="px-4 pb-3 md:hidden">
-        <SearchBar />
-      </div>
-
-      {menuOpen && (
-        <nav className="md:hidden border-t border-slate-200 bg-white px-4 py-3 flex flex-col gap-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-slate-700"
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      )}
+      <CategoryBanner />
     </header>
   );
 }
