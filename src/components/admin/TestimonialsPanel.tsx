@@ -5,10 +5,16 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 
+// Keep in sync with MAX_TESTIMONIALS in convex/testimonials.ts — that's
+// the enforced limit, this is just for the UI hint.
+const MAX_TESTIMONIALS = 10;
+
 export default function TestimonialsPanel({ token }: { token: string }) {
   const testimonials = useQuery(api.testimonials.list, {});
   const addTestimonial = useMutation(api.testimonials.add);
   const removeTestimonial = useMutation(api.testimonials.remove);
+  const testimonialCount = testimonials?.length ?? 0;
+  const atTestimonialLimit = testimonialCount >= MAX_TESTIMONIALS;
 
   const [name, setName] = useState("");
   const [quote, setQuote] = useState("");
@@ -20,6 +26,10 @@ export default function TestimonialsPanel({ token }: { token: string }) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (atTestimonialLimit) {
+      setError(`Testimonial limit reached (${MAX_TESTIMONIALS} max).`);
+      return;
+    }
     if (!name.trim() || !quote.trim()) {
       setError("Name and quote are required.");
       return;
@@ -50,11 +60,23 @@ export default function TestimonialsPanel({ token }: { token: string }) {
   return (
     <div className="space-y-8">
       <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 p-6">
-        <h2 className="text-lg font-bold text-slate-900">Add a customer testimonial</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-900">Add a customer testimonial</h2>
+          {testimonials && (
+            <span className="text-xs text-slate-500">
+              {testimonialCount} / {MAX_TESTIMONIALS}
+            </span>
+          )}
+        </div>
         <p className="text-xs text-slate-500">
           Only add real feedback you&apos;ve actually received from a customer — this shows up
           publicly on the homepage.
         </p>
+        {atTestimonialLimit && (
+          <p className="text-xs font-semibold text-red-600">
+            Limit reached ({MAX_TESTIMONIALS} max) — delete one below to add another.
+          </p>
+        )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="text-sm">
@@ -95,8 +117,8 @@ export default function TestimonialsPanel({ token }: { token: string }) {
 
         <button
           type="submit"
-          disabled={saving}
-          className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+          disabled={saving || atTestimonialLimit}
+          className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {saving ? "Saving…" : "Add testimonial"}
         </button>

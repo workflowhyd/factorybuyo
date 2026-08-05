@@ -14,6 +14,8 @@ const conditionValidator = v.optional(
   v.union(v.literal("Good"), v.literal("Very Good"), v.literal("Excellent"))
 );
 
+export const MAX_PRODUCTS = 20;
+
 export const list = query({
   args: {
     category: v.optional(v.union(v.literal("gaming"), v.literal("refurbished"))),
@@ -56,6 +58,12 @@ export const add = mutation({
   },
   handler: async (ctx, args) => {
     await requireAdmin(ctx, args.token);
+    const count = (await ctx.db.query("products").collect()).length;
+    if (count >= MAX_PRODUCTS) {
+      throw new Error(
+        `Product limit reached (${MAX_PRODUCTS} max). Delete a product before adding a new one.`
+      );
+    }
     await ctx.db.insert("products", {
       slug: args.slug,
       name: args.name,

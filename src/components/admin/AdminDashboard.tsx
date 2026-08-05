@@ -1,14 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Doc } from "../../../convex/_generated/dataModel";
 import { formatINR } from "@/lib/format";
 import { clearAdminToken } from "@/lib/adminSession";
+import StorageImage from "@/components/StorageImage";
 import ProductForm from "./ProductForm";
 import TestimonialsPanel from "./TestimonialsPanel";
+
+// Keep in sync with MAX_PRODUCTS in convex/products.ts — that's the
+// enforced limit, this is just for the UI hint.
+const MAX_PRODUCTS = 20;
 
 export default function AdminDashboard({
   token,
@@ -38,18 +42,35 @@ export default function AdminDashboard({
     onLogout();
   }
 
+  const productCount = products?.length ?? 0;
+  const atProductLimit = productCount >= MAX_PRODUCTS;
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-extrabold text-slate-900">Admin</h1>
-        <div className="flex gap-3">
+        <div>
+          <h1 className="text-2xl font-extrabold text-slate-900">Admin</h1>
+          {tab === "products" && products && (
+            <p className="mt-0.5 text-xs text-slate-500">
+              {productCount} / {MAX_PRODUCTS} products
+            </p>
+          )}
+        </div>
+        <div className="flex items-center gap-3">
           {tab === "products" && editing === null && (
-            <button
-              onClick={() => setEditing("new")}
-              className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-            >
-              + Add product
-            </button>
+            <div className="flex flex-col items-end gap-1">
+              <button
+                onClick={() => setEditing("new")}
+                disabled={atProductLimit}
+                title={atProductLimit ? `Product limit reached (${MAX_PRODUCTS} max)` : undefined}
+                className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:hover:opacity-100"
+              >
+                + Add product
+              </button>
+              {atProductLimit && (
+                <p className="text-xs text-red-600">Limit reached — delete one to add another.</p>
+              )}
+            </div>
           )}
           <button
             onClick={handleLogout}
@@ -108,7 +129,7 @@ export default function AdminDashboard({
                 <div key={product._id} className="flex items-center gap-4 p-4">
                   <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-slate-100">
                     {product.images[0] && (
-                      <Image
+                      <StorageImage
                         src={product.images[0]}
                         alt=""
                         fill

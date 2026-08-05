@@ -2,6 +2,8 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { requireAdmin } from "./auth";
 
+export const MAX_TESTIMONIALS = 10;
+
 export const list = query({
   args: {},
   handler: async (ctx) => {
@@ -19,6 +21,12 @@ export const add = mutation({
   },
   handler: async (ctx, { token, name, quote, rating }) => {
     await requireAdmin(ctx, token);
+    const count = (await ctx.db.query("testimonials").collect()).length;
+    if (count >= MAX_TESTIMONIALS) {
+      throw new Error(
+        `Testimonial limit reached (${MAX_TESTIMONIALS} max). Delete one before adding a new one.`
+      );
+    }
     await ctx.db.insert("testimonials", {
       name,
       quote,
