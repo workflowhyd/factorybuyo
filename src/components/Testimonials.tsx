@@ -29,9 +29,9 @@ export default function Testimonials() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+    <section className="mx-auto max-w-6xl px-4 py-12 sm:py-20">
       <Reveal>
-        <h2 className="mb-8 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+        <h2 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 sm:mb-8 sm:text-sm">
           What our customers have to say
         </h2>
       </Reveal>
@@ -39,19 +39,21 @@ export default function Testimonials() {
         {testimonials.map((t, i) => (
           <div
             key={t._id}
-            className="w-[270px] flex-[0_0_auto] rounded-2xl bg-[#faf4fd] p-6 shadow-[0_4px_16px_-8px_rgba(58,14,109,0.15)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_-16px_rgba(58,14,109,0.28)]"
+            className="w-[230px] flex-[0_0_auto] rounded-2xl bg-[#faf4fd] p-5 shadow-[0_4px_16px_-8px_rgba(58,14,109,0.15)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_-16px_rgba(58,14,109,0.28)] sm:w-[270px] sm:p-6"
           >
             <div
-              className="flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold text-white shadow-sm"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white shadow-sm sm:h-12 sm:w-12 sm:text-lg"
               style={{ backgroundColor: avatarColors[i % avatarColors.length] }}
             >
               {t.name.charAt(0).toUpperCase()}
             </div>
-            <p className="mt-4 text-sm font-semibold text-slate-900">{t.name}</p>
+            <p className="mt-3 text-sm font-semibold text-slate-900 sm:mt-4">{t.name}</p>
             <div className="mt-1.5">
               <StarRow rating={t.rating} />
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-slate-600">{t.quote}</p>
+            <p className="mt-2.5 text-[13px] leading-relaxed text-slate-600 sm:mt-3 sm:text-sm">
+              {t.quote}
+            </p>
           </div>
         ))}
       </Carousel>

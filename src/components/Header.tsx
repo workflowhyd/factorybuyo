@@ -27,12 +27,12 @@ function SearchBar({ className }: { className?: string }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="What are you looking for…."
-          className="w-full rounded-full bg-slate-100 py-2.5 pl-4 pr-11 text-sm text-slate-900 placeholder:text-slate-400 transition-shadow focus:outline-none focus:ring-2 focus:ring-brand"
+          className="w-full rounded-full bg-slate-100 py-3 pl-4 pr-12 text-sm text-slate-900 placeholder:text-slate-400 transition-shadow focus:outline-none focus:ring-2 focus:ring-brand"
         />
         <button
           type="submit"
           aria-label="Search"
-          className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-slate-900 p-2 text-white transition-all hover:scale-105 hover:bg-slate-800 active:scale-95"
+          className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-slate-900 p-2.5 text-white transition-all hover:scale-105 hover:bg-slate-800 active:scale-95"
         >
           <Search className="h-4 w-4" />
         </button>
@@ -71,14 +71,14 @@ export default function Header() {
         }`}
       >
         <div
-          className={`mx-auto flex max-w-6xl items-center gap-4 px-4 transition-all duration-300 ease-out ${
-            scrolled ? "py-2.5" : "py-4"
+          className={`mx-auto flex max-w-6xl items-center gap-3 px-4 transition-all duration-300 ease-out sm:gap-4 ${
+            scrolled ? "py-2 sm:py-2.5" : "py-3 sm:py-4"
           }`}
         >
           <Link
             href="/"
             className={`relative flex-shrink-0 transition-all duration-300 ease-out ${
-              scrolled ? "h-9 w-32 sm:h-10 sm:w-36" : "h-14 w-48 sm:h-16 sm:w-56"
+              scrolled ? "h-12 w-44 sm:h-10 sm:w-36" : "h-[78px] w-[272px] sm:h-16 sm:w-56"
             }`}
           >
             <Image
@@ -101,19 +101,19 @@ export default function Header() {
           >
             Chat on WhatsApp
           </a>
+        </div>
+
+        <div className="flex items-center gap-2.5 px-4 pb-3 md:hidden">
+          <SearchBar className="flex-1" />
           <a
             href={buildGeneralWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
-            className="ml-auto rounded-full bg-whatsapp p-2.5 text-white shadow-sm transition-transform active:scale-90 sm:hidden"
+            className="flex-shrink-0 rounded-full bg-whatsapp p-3 text-white shadow-sm transition-transform active:scale-90"
           >
             <WhatsAppIcon className="h-5 w-5" />
           </a>
-        </div>
-
-        <div className="px-4 pb-3 md:hidden">
-          <SearchBar />
         </div>
       </div>
 

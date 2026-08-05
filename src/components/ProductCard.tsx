@@ -18,15 +18,17 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
       href={`/product?slug=${product.slug}`}
       className="group block overflow-hidden rounded-2xl bg-white shadow-[0_2px_10px_-4px_rgba(15,23,42,0.1)] ring-1 ring-slate-100 transition-all duration-400 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_48px_-18px_rgba(58,14,109,0.28)] hover:ring-slate-200"
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-50">
+      <div className="relative aspect-[3/2] w-full overflow-hidden bg-slate-50 sm:aspect-[4/3]">
         {image && (
-          <StorageImage
-            src={image}
-            alt={product.name}
-            fill
-            unoptimized
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
-          />
+          <div className="absolute inset-2.5 sm:inset-3.5">
+            <StorageImage
+              src={image}
+              alt={product.name}
+              fill
+              unoptimized
+              className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+            />
+          </div>
         )}
 
         <button
@@ -48,12 +50,12 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
         </button>
 
         {discount && (
-          <span className="absolute left-3 top-3 rounded-full bg-brand px-2.5 py-1 text-xs font-bold text-white shadow-sm">
+          <span className="absolute left-2.5 top-2.5 rounded-full bg-brand px-2.5 py-1 text-[11px] font-bold text-white shadow-sm sm:left-3 sm:top-3 sm:text-xs">
             -{discount}%
           </span>
         )}
         {product.conditionGrade && (
-          <span className="absolute right-3 top-11 rounded-full bg-slate-900/85 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+          <span className="absolute right-2.5 top-10 rounded-full bg-slate-900/85 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm sm:right-3 sm:top-11 sm:text-xs">
             {product.conditionGrade}
           </span>
         )}
@@ -63,7 +65,7 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
           </span>
         )}
 
-        <div className="absolute inset-x-0 bottom-0 flex translate-y-3 justify-center pb-3 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100">
+        <div className="absolute inset-x-0 bottom-0 hidden translate-y-3 justify-center pb-3 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 sm:flex">
           <span className="flex items-center gap-1.5 rounded-full bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-slate-900 shadow-md backdrop-blur-sm">
             <Eye className="h-3.5 w-3.5" strokeWidth={2} />
             View details
@@ -71,17 +73,19 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
         </div>
       </div>
 
-      <div className="p-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+      <div className="p-3 sm:p-4">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 sm:text-[11px]">
           {product.brand}
         </p>
-        <p className="mt-1.5 text-sm font-semibold leading-snug text-slate-900 line-clamp-2">
+        <p className="mt-1 text-[13px] font-semibold leading-snug text-slate-900 line-clamp-1 sm:mt-1.5 sm:text-sm sm:line-clamp-2">
           {product.name}
         </p>
-        <div className="mt-2.5 flex items-baseline gap-2">
-          <span className="text-base font-bold text-slate-900">{formatINR(product.price)}</span>
+        <div className="mt-1.5 flex items-baseline gap-1.5 sm:mt-2.5 sm:gap-2">
+          <span className="text-sm font-bold text-slate-900 sm:text-base">
+            {formatINR(product.price)}
+          </span>
           {product.originalPrice && (
-            <span className="text-xs text-slate-400 line-through">
+            <span className="text-[11px] text-slate-400 line-through sm:text-xs">
               {formatINR(product.originalPrice)}
             </span>
           )}

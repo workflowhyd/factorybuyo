@@ -34,7 +34,7 @@ export default function Carousel({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-5">{children}</div>
+        <div className="flex gap-3 sm:gap-5">{children}</div>
       </div>
 
       {canScrollPrev && (

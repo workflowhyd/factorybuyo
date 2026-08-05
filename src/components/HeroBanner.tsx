@@ -30,7 +30,7 @@ export default function HeroBanner() {
           className="absolute -inset-8 -z-10 rounded-[40px] bg-[radial-gradient(55%_55%_at_25%_15%,rgba(230,18,125,0.35),transparent_70%),radial-gradient(50%_50%_at_85%_85%,rgba(91,31,143,0.4),transparent_70%)] blur-3xl"
         />
 
-        <div className="relative h-[340px] overflow-hidden rounded-3xl shadow-[0_30px_70px_-20px_rgba(58,14,109,0.45)] sm:h-[380px] md:h-[480px] lg:h-[550px]">
+        <div className="relative h-[300px] overflow-hidden rounded-3xl shadow-[0_30px_70px_-20px_rgba(58,14,109,0.45)] sm:h-[380px] md:h-[480px] lg:h-[550px]">
           <AnimatePresence>
             <motion.div
               key={slides[index].image}
@@ -59,7 +59,7 @@ export default function HeroBanner() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="relative z-10 flex h-full items-center px-6 sm:px-10 md:px-14">
+          <div className="relative z-10 flex h-full items-center px-5 pb-7 sm:px-10 sm:pb-0 md:px-14">
             <AnimatePresence mode="wait">
               <motion.div
                 key={index}
@@ -71,14 +71,14 @@ export default function HeroBanner() {
                 <motion.p
                   variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
                   transition={{ duration: 0.6, ease: EASE }}
-                  className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70"
+                  className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70 sm:text-xs"
                 >
                   Handpicked for India
                 </motion.p>
                 <motion.h1
                   variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
                   transition={{ duration: 0.65, ease: EASE, delay: 0.08 }}
-                  className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
+                  className="mt-2 text-[26px] font-bold leading-[1.15] tracking-tight text-white sm:mt-3 sm:text-4xl sm:leading-tight md:text-5xl"
                 >
                   Premium tech,
                   <br />
@@ -87,7 +87,7 @@ export default function HeroBanner() {
                 <motion.p
                   variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
                   transition={{ duration: 0.6, ease: EASE, delay: 0.16 }}
-                  className="mt-4 text-sm leading-relaxed text-white/80 sm:text-base"
+                  className="mt-2.5 text-[13px] leading-relaxed text-white/80 sm:mt-4 sm:text-base"
                 >
                   Hand-checked gaming laptops and certified refurbished deals, reserved online
                   and confirmed on WhatsApp.
@@ -95,18 +95,18 @@ export default function HeroBanner() {
                 <motion.div
                   variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
                   transition={{ duration: 0.6, ease: EASE, delay: 0.24 }}
-                  className="mt-7 flex flex-wrap gap-3"
+                  className="mt-5 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-3"
                 >
                   <Link
                     href="/gaming-laptops"
-                    className="group relative overflow-hidden rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-6px_rgba(230,18,125,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-6px_rgba(230,18,125,0.75)] active:translate-y-0"
+                    className="group relative overflow-hidden rounded-full bg-brand px-6 py-3 text-center text-sm font-bold text-white shadow-[0_8px_24px_-6px_rgba(230,18,125,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-6px_rgba(230,18,125,0.75)] active:translate-y-0 sm:inline-block"
                   >
                     <span className="relative z-10">Shop Gaming Laptops</span>
                     <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/25 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
                   </Link>
                   <Link
                     href="/refurbished-laptops"
-                    className="rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10 active:translate-y-0"
+                    className="rounded-full border border-white/40 px-6 py-3 text-center text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10 active:translate-y-0 sm:inline-block"
                   >
                     Shop Refurbished
                   </Link>
@@ -115,7 +115,7 @@ export default function HeroBanner() {
             </AnimatePresence>
           </div>
 
-          <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-1.5 sm:bottom-7">
+          <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5 sm:bottom-7">
             {slides.map((s, i) => (
               <button
                 key={s.image}

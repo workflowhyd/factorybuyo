@@ -27,7 +27,7 @@ const badges = [
 export default function TrustBadges() {
   return (
     <section className="border-y border-slate-100 bg-slate-50/60">
-      <StaggerGroup className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-12 sm:grid-cols-4 sm:gap-8 sm:py-14">
+      <StaggerGroup className="mx-auto grid max-w-6xl grid-cols-2 gap-5 px-4 py-10 sm:grid-cols-4 sm:gap-8 sm:py-14">
         {badges.map((badge) => (
           <StaggerItem key={badge.title} className="group flex items-center gap-3.5 sm:flex-col sm:text-center">
             <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand/10 to-brand-purple/10 text-brand transition-transform duration-300 ease-out group-hover:scale-110 sm:h-14 sm:w-14">
