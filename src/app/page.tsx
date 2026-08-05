@@ -4,6 +4,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import WhyFactoryBuyo from "@/components/WhyFactoryBuyo";
 import Testimonials from "@/components/Testimonials";
 import HeroBanner from "@/components/HeroBanner";
+import GamingLaptopsBanner from "@/components/GamingLaptopsBanner";
 
 export default function Home() {
   return (
@@ -13,6 +14,8 @@ export default function Home() {
       <TrustBadges />
 
       <CategoryRail />
+
+      <GamingLaptopsBanner />
 
       <ProductCarousel
         title="Trending Gaming Laptops"
