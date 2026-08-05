@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Doc } from "../../../convex/_generated/dataModel";
-import { formatINR } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 import { clearAdminToken } from "@/lib/adminSession";
 import StorageImage from "@/components/StorageImage";
 import ProductForm from "./ProductForm";
@@ -142,7 +142,7 @@ export default function AdminDashboard({
                     <p className="truncate text-sm font-semibold text-slate-900">{product.name}</p>
                     <p className="text-xs text-slate-500">
                       {product.category === "gaming" ? "Gaming" : "Refurbished"} ·{" "}
-                      {formatINR(product.price)}
+                      {formatPrice(product.price)}
                       {!product.inStock && " · Sold out"}
                       {product.featured && " · Featured"}
                     </p>

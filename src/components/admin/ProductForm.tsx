@@ -15,6 +15,8 @@ type FormState = {
   brand: string;
   price: string;
   originalPrice: string;
+  priceSGD: string;
+  originalPriceSGD: string;
   cpu: string;
   gpu: string;
   ram: string;
@@ -34,6 +36,8 @@ function toFormState(product?: Doc<"products">): FormState {
     brand: product?.brand ?? "",
     price: product ? String(product.price) : "",
     originalPrice: product?.originalPrice ? String(product.originalPrice) : "",
+    priceSGD: product?.priceSGD ? String(product.priceSGD) : "",
+    originalPriceSGD: product?.originalPriceSGD ? String(product.originalPriceSGD) : "",
     cpu: product?.specs.cpu ?? "",
     gpu: product?.specs.gpu ?? "",
     ram: product?.specs.ram ?? "",
@@ -126,6 +130,8 @@ export default function ProductForm({
         brand: form.brand.trim(),
         price: Number(form.price),
         originalPrice: form.originalPrice ? Number(form.originalPrice) : undefined,
+        priceSGD: form.priceSGD ? Number(form.priceSGD) : undefined,
+        originalPriceSGD: form.originalPriceSGD ? Number(form.originalPriceSGD) : undefined,
         specs: {
           cpu: form.cpu || undefined,
           gpu: form.gpu || undefined,
@@ -225,6 +231,31 @@ export default function ProductForm({
             type="number"
             value={form.originalPrice}
             onChange={(e) => update("originalPrice", e.target.value)}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          />
+        </label>
+
+        <label className="text-sm">
+          <span className="mb-1 block font-medium text-slate-700">
+            Singapore price (S$, optional)
+          </span>
+          <input
+            type="number"
+            value={form.priceSGD}
+            onChange={(e) => update("priceSGD", e.target.value)}
+            placeholder="Leave blank to hide from SGD region"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          />
+        </label>
+
+        <label className="text-sm">
+          <span className="mb-1 block font-medium text-slate-700">
+            Singapore original price (S$, optional)
+          </span>
+          <input
+            type="number"
+            value={form.originalPriceSGD}
+            onChange={(e) => update("originalPriceSGD", e.target.value)}
             className="w-full rounded-lg border border-slate-300 px-3 py-2"
           />
         </label>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Flame } from "lucide-react";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
+import RegionSwitcher from "@/components/RegionSwitcher";
 
 const links = [
   { label: "Hot Deals", href: "/hot-deals", icon: Flame, className: "text-brand" },
@@ -52,6 +53,7 @@ export default function CategoryBanner({ scrolled = false }: { scrolled?: boolea
           Need help?
           <span className="absolute bottom-1.5 left-2.5 right-2.5 h-[1.5px] origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100 sm:bottom-[-2px] sm:left-0 sm:right-0" />
         </a>
+        <RegionSwitcher className="ml-1 sm:ml-2" />
       </div>
     </div>
   );

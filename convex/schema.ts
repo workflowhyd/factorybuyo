@@ -9,6 +9,8 @@ export default defineSchema({
     brand: v.string(),
     price: v.number(),
     originalPrice: v.optional(v.number()),
+    priceSGD: v.optional(v.number()),
+    originalPriceSGD: v.optional(v.number()),
     specs: v.object({
       cpu: v.optional(v.string()),
       gpu: v.optional(v.string()),

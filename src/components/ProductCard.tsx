@@ -5,11 +5,15 @@ import { useState } from "react";
 import { Heart, Eye } from "lucide-react";
 import { motion } from "motion/react";
 import StorageImage from "@/components/StorageImage";
-import { formatINR, discountPercent } from "@/lib/format";
+import { formatPrice, discountPercent } from "@/lib/format";
+import { getRegionalPrice } from "@/lib/pricing";
+import { useRegion } from "@/context/RegionContext";
 import type { Doc } from "../../convex/_generated/dataModel";
 
 export default function ProductCard({ product }: { product: Doc<"products"> }) {
-  const discount = discountPercent(product.price, product.originalPrice);
+  const { region } = useRegion();
+  const { price, originalPrice } = getRegionalPrice(product, region);
+  const discount = discountPercent(price, originalPrice);
   const image = product.images[0];
   const [saved, setSaved] = useState(false);
 
@@ -82,11 +86,11 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
         </p>
         <div className="mt-1.5 flex items-baseline gap-1.5 sm:mt-2.5 sm:gap-2">
           <span className="text-sm font-bold text-slate-900 sm:text-base">
-            {formatINR(product.price)}
+            {formatPrice(price, region)}
           </span>
-          {product.originalPrice && (
+          {originalPrice && (
             <span className="text-[11px] text-slate-400 line-through sm:text-xs">
-              {formatINR(product.originalPrice)}
+              {formatPrice(originalPrice, region)}
             </span>
           )}
         </div>

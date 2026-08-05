@@ -6,7 +6,9 @@ import StorageImage from "@/components/StorageImage";
 import { useQuery } from "convex/react";
 import { Check } from "lucide-react";
 import { api } from "../../convex/_generated/api";
-import { formatINR, discountPercent } from "@/lib/format";
+import { formatPrice, discountPercent } from "@/lib/format";
+import { getRegionalPrice } from "@/lib/pricing";
+import { useRegion } from "@/context/RegionContext";
 import WhatsAppReserveButton from "@/components/WhatsAppReserveButton";
 
 const conditionDescriptions: Record<string, string> = {
@@ -28,6 +30,7 @@ export default function ProductDetail() {
   const slug = searchParams.get("slug") ?? "";
   const product = useQuery(api.products.getBySlug, slug ? { slug } : "skip");
   const [activeImage, setActiveImage] = useState(0);
+  const { region } = useRegion();
 
   if (!slug) {
     return <p className="mx-auto max-w-6xl px-4 py-16 text-slate-500">Product not found.</p>;
@@ -59,7 +62,8 @@ export default function ProductDetail() {
     );
   }
 
-  const discount = discountPercent(product.price, product.originalPrice);
+  const { price, originalPrice } = getRegionalPrice(product, region);
+  const discount = discountPercent(price, originalPrice);
   const specs = Object.entries(product.specs).filter(([, value]) => value);
 
   return (
@@ -104,11 +108,11 @@ export default function ProductDetail() {
 
           <div className="mt-4 flex items-baseline gap-3">
             <span className="text-3xl font-bold tracking-tight text-slate-900">
-              {formatINR(product.price)}
+              {formatPrice(price, region)}
             </span>
-            {product.originalPrice && (
+            {originalPrice && (
               <span className="text-lg text-slate-400 line-through">
-                {formatINR(product.originalPrice)}
+                {formatPrice(originalPrice, region)}
               </span>
             )}
             {discount && (
@@ -145,7 +149,7 @@ export default function ProductDetail() {
               <WhatsAppReserveButton
                 product={{
                   name: product.name,
-                  price: product.price,
+                  price,
                   slug: product.slug,
                   conditionGrade: product.conditionGrade,
                 }}

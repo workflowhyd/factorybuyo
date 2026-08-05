@@ -3,11 +3,17 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { discountPercent } from "@/lib/format";
+import { getRegionalPrice } from "@/lib/pricing";
+import { useRegion } from "@/context/RegionContext";
 import ProductCard from "@/components/ProductCard";
 
 export default function HotDealsPage() {
+  const { region } = useRegion();
   const products = useQuery(api.products.list, {});
-  const deals = products?.filter((p) => discountPercent(p.price, p.originalPrice));
+  const deals = products?.filter((p) => {
+    const { price, originalPrice } = getRegionalPrice(p, region);
+    return discountPercent(price, originalPrice);
+  });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:py-14">
@@ -36,11 +42,14 @@ export default function HotDealsPage() {
         <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {deals
             .slice()
-            .sort(
-              (a, b) =>
-                (discountPercent(b.price, b.originalPrice) ?? 0) -
-                (discountPercent(a.price, a.originalPrice) ?? 0)
-            )
+            .sort((a, b) => {
+              const aRegional = getRegionalPrice(a, region);
+              const bRegional = getRegionalPrice(b, region);
+              return (
+                (discountPercent(bRegional.price, bRegional.originalPrice) ?? 0) -
+                (discountPercent(aRegional.price, aRegional.originalPrice) ?? 0)
+              );
+            })
             .map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

@@ -1,4 +1,4 @@
-import { formatINR } from "./format";
+import { formatPrice, type Region } from "./format";
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 
@@ -9,12 +9,16 @@ type ReserveProduct = {
   conditionGrade?: string;
 };
 
-export function buildReserveWhatsAppLink(product: ReserveProduct, chosenCondition?: string) {
+export function buildReserveWhatsAppLink(
+  product: ReserveProduct,
+  chosenCondition?: string,
+  region: Region = "IN"
+) {
   const lines = [
     `Hi FactoryBuyo, I'd like to reserve this laptop:`,
     ``,
     `*${product.name}*`,
-    `Price: ${formatINR(product.price)}`,
+    `Price: ${formatPrice(product.price, region)}`,
   ];
   const condition = chosenCondition ?? product.conditionGrade;
   if (condition) {
