@@ -44,7 +44,7 @@ export default function HeroBanner() {
     <section className="relative">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {slides.map((slide) => (
+          {slides.map((slide, i) => (
             <Link
               key={slide.image}
               href={slide.href}
@@ -55,7 +55,8 @@ export default function HeroBanner() {
                 alt={slide.alt}
                 fill
                 unoptimized
-                priority
+                priority={i === 0}
+                loading={i === 0 ? undefined : "lazy"}
                 className="object-cover object-left sm:object-center"
               />
             </Link>
