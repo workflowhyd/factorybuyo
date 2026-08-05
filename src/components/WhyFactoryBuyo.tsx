@@ -1,4 +1,6 @@
 import { BadgeCheck, ShieldCheck, MessageCircle, Truck } from "lucide-react";
+import Reveal from "@/components/motion/Reveal";
+import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 
 const features = [
   {
@@ -25,24 +27,29 @@ const features = [
 
 export default function WhyFactoryBuyo() {
   return (
-    <section className="bg-[#f7f0fb] py-14">
+    <section className="bg-gradient-to-b from-[#faf6fd] to-[#f3ecf9] py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-center text-xl font-extrabold uppercase tracking-wide text-slate-900 sm:text-2xl">
-          Why buy from FactoryBuyo
-        </h2>
-        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal className="text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-purple">
+            Why FactoryBuyo
+          </p>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            Built around trust, not just deals
+          </h2>
+        </Reveal>
+        <StaggerGroup className="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           {features.map((feature) => (
-            <div key={feature.title} className="text-center">
-              <feature.icon
-                className="mx-auto h-9 w-9 text-brand-purple"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
-              <p className="mt-4 text-sm font-bold text-slate-900">{feature.title}</p>
-              <p className="mx-auto mt-2 max-w-xs text-xs text-slate-500">{feature.desc}</p>
-            </div>
+            <StaggerItem key={feature.title} className="group text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-brand-purple shadow-[0_8px_24px_-10px_rgba(91,31,143,0.35)] transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-105">
+                <feature.icon className="h-7 w-7" strokeWidth={1.6} aria-hidden="true" />
+              </div>
+              <p className="mt-5 text-sm font-semibold text-slate-900">{feature.title}</p>
+              <p className="mx-auto mt-2.5 max-w-xs text-sm leading-relaxed text-slate-500">
+                {feature.desc}
+              </p>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

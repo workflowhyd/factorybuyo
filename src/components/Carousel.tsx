@@ -34,7 +34,7 @@ export default function Carousel({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4">{children}</div>
+        <div className="flex gap-5">{children}</div>
       </div>
 
       {canScrollPrev && (
@@ -42,7 +42,7 @@ export default function Carousel({ children }: { children: React.ReactNode }) {
           type="button"
           aria-label="Scroll left"
           onClick={() => emblaApi?.scrollPrev()}
-          className="absolute -left-3 top-1/2 hidden -translate-y-1/2 rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-md transition-colors hover:bg-slate-50 lg:flex"
+          className="absolute -left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-[0_8px_24px_-8px_rgba(15,23,42,0.25)] backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:text-brand lg:flex"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -52,7 +52,7 @@ export default function Carousel({ children }: { children: React.ReactNode }) {
           type="button"
           aria-label="Scroll right"
           onClick={() => emblaApi?.scrollNext()}
-          className="absolute -right-3 top-1/2 hidden -translate-y-1/2 rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-md transition-colors hover:bg-slate-50 lg:flex"
+          className="absolute -right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-[0_8px_24px_-8px_rgba(15,23,42,0.25)] backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:text-brand lg:flex"
         >
           <ChevronRight className="h-4 w-4" />
         </button>

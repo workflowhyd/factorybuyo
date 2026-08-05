@@ -10,18 +10,20 @@ export default function HotDealsPage() {
   const deals = products?.filter((p) => discountPercent(p.price, p.originalPrice));
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="mb-8">
-        <h1 className="text-2xl font-extrabold text-slate-900 sm:text-3xl">Hot Deals</h1>
-        <p className="mt-2 max-w-2xl text-sm text-slate-500">
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-14">
+      <div className="mb-10">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          Hot Deals
+        </h1>
+        <p className="mt-2.5 max-w-2xl text-sm leading-relaxed text-slate-500">
           Every laptop currently priced below its original listing — biggest discounts first.
         </p>
       </div>
 
       {products === undefined && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="aspect-[4/3] animate-pulse rounded-xl bg-slate-100" />
+            <div key={i} className="aspect-[4/3] animate-pulse rounded-2xl bg-slate-100" />
           ))}
         </div>
       )}
@@ -31,7 +33,7 @@ export default function HotDealsPage() {
       )}
 
       {deals && deals.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
           {deals
             .slice()
             .sort(

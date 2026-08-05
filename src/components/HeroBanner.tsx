@@ -2,97 +2,133 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCallback, useSyncExternalStore } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import type { EmblaCarouselType } from "embla-carousel";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 const slides = [
-  {
-    image: "/hero-slide-1.jpg",
-    href: "/hot-deals",
-    alt: "Premium tech, zero price tag — love it or return it, absolutely free",
-  },
-  {
-    image: "/hero-slide-2.jpg",
-    href: "/refurbished-laptops",
-    alt: "Renewed electronics, like new but way cheaper — save up to 70%",
-  },
+  { image: "/hero-slide-1.jpg", alt: "Premium tech, tested and trusted" },
+  { image: "/hero-slide-2.jpg", alt: "Renewed electronics, like new for less" },
 ];
 
-function subscribe(emblaApi: EmblaCarouselType | undefined, callback: () => void) {
-  if (!emblaApi) return () => {};
-  emblaApi.on("select", callback).on("reInit", callback);
-  return () => {
-    emblaApi.off("select", callback).off("reInit", callback);
-  };
-}
+const SLIDE_DURATION = 5500;
 
 export default function HeroBanner() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 4500, stopOnInteraction: false }),
-  ]);
+  const [index, setIndex] = useState(0);
 
-  const selectedIndex = useSyncExternalStore(
-    useCallback((cb) => subscribe(emblaApi, cb), [emblaApi]),
-    () => emblaApi?.selectedScrollSnap() ?? 0,
-    () => 0
-  );
+  useEffect(() => {
+    const id = setInterval(() => setIndex((i) => (i + 1) % slides.length), SLIDE_DURATION);
+    return () => clearInterval(id);
+  }, []);
 
   return (
-    <section className="relative">
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex">
-          {slides.map((slide, i) => (
-            <Link
-              key={slide.image}
-              href={slide.href}
-              className="relative aspect-[16/10] w-full flex-[0_0_100%] sm:aspect-[21/8]"
+    <section className="mx-auto max-w-6xl px-4 pb-10 pt-4 sm:pb-14 sm:pt-6">
+      <div className="relative isolate">
+        <div
+          aria-hidden
+          className="absolute -inset-8 -z-10 rounded-[40px] bg-[radial-gradient(55%_55%_at_25%_15%,rgba(230,18,125,0.35),transparent_70%),radial-gradient(50%_50%_at_85%_85%,rgba(91,31,143,0.4),transparent_70%)] blur-3xl"
+        />
+
+        <div className="relative h-[340px] overflow-hidden rounded-3xl shadow-[0_30px_70px_-20px_rgba(58,14,109,0.45)] sm:h-[380px] md:h-[480px] lg:h-[550px]">
+          <AnimatePresence>
+            <motion.div
+              key={slides[index].image}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: EASE }}
             >
-              <Image
-                src={slide.image}
-                alt={slide.alt}
-                fill
-                unoptimized
-                priority={i === 0}
-                loading={i === 0 ? undefined : "lazy"}
-                className="object-cover object-left sm:object-center"
+              <motion.div
+                className="absolute inset-0"
+                initial={{ scale: 1 }}
+                animate={{ scale: 1.09 }}
+                transition={{ duration: (SLIDE_DURATION + 1200) / 1000, ease: "linear" }}
+              >
+                <Image
+                  src={slides[index].image}
+                  alt={slides[index].alt}
+                  fill
+                  unoptimized
+                  priority={index === 0}
+                  className="object-cover object-center"
+                />
+              </motion.div>
+              <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(15,5,32,0.9)_10%,rgba(58,14,109,0.55)_45%,rgba(58,14,109,0.15)_80%)]" />
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="relative z-10 flex h-full items-center px-6 sm:px-10 md:px-14">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={index}
+                className="max-w-md"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+              >
+                <motion.p
+                  variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
+                  transition={{ duration: 0.6, ease: EASE }}
+                  className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70"
+                >
+                  Handpicked for India
+                </motion.p>
+                <motion.h1
+                  variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+                  transition={{ duration: 0.65, ease: EASE, delay: 0.08 }}
+                  className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
+                >
+                  Premium tech,
+                  <br />
+                  honest prices.
+                </motion.h1>
+                <motion.p
+                  variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
+                  transition={{ duration: 0.6, ease: EASE, delay: 0.16 }}
+                  className="mt-4 text-sm leading-relaxed text-white/80 sm:text-base"
+                >
+                  Hand-checked gaming laptops and certified refurbished deals, reserved online
+                  and confirmed on WhatsApp.
+                </motion.p>
+                <motion.div
+                  variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0 } }}
+                  transition={{ duration: 0.6, ease: EASE, delay: 0.24 }}
+                  className="mt-7 flex flex-wrap gap-3"
+                >
+                  <Link
+                    href="/gaming-laptops"
+                    className="group relative overflow-hidden rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-6px_rgba(230,18,125,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-6px_rgba(230,18,125,0.75)] active:translate-y-0"
+                  >
+                    <span className="relative z-10">Shop Gaming Laptops</span>
+                    <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/25 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
+                  </Link>
+                  <Link
+                    href="/refurbished-laptops"
+                    className="rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10 active:translate-y-0"
+                  >
+                    Shop Refurbished
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-1.5 sm:bottom-7">
+            {slides.map((s, i) => (
+              <button
+                key={s.image}
+                type="button"
+                aria-label={`Go to slide ${i + 1}`}
+                onClick={() => setIndex(i)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === index ? "w-6 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70"
+                }`}
               />
-            </Link>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-
-      <button
-        type="button"
-        aria-label="Previous slide"
-        onClick={() => emblaApi?.scrollPrev()}
-        className="absolute left-5 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-md backdrop-blur-sm transition-colors hover:bg-white sm:flex"
-      >
-        <ChevronLeft className="h-5 w-5" />
-      </button>
-      <button
-        type="button"
-        aria-label="Next slide"
-        onClick={() => emblaApi?.scrollNext()}
-        className="absolute right-5 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-md backdrop-blur-sm transition-colors hover:bg-white sm:flex"
-      >
-        <ChevronRight className="h-5 w-5" />
-      </button>
-
-      <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5 sm:bottom-5">
-        {slides.map((slide, i) => (
-          <button
-            key={slide.image}
-            type="button"
-            aria-label={`Go to slide ${i + 1}`}
-            onClick={() => emblaApi?.scrollTo(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === selectedIndex ? "w-5 bg-white" : "w-1.5 bg-white/50"
-            }`}
-          />
-        ))}
       </div>
     </section>
   );

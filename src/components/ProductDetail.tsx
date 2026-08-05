@@ -35,9 +35,9 @@ export default function ProductDetail() {
 
   if (product === undefined) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-10">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:py-14">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-          <div className="aspect-[4/3] animate-pulse rounded-xl bg-slate-100" />
+          <div className="aspect-[4/3] animate-pulse rounded-2xl bg-slate-100" />
           <div className="space-y-4">
             <div className="h-8 w-2/3 animate-pulse rounded bg-slate-100" />
             <div className="h-6 w-1/3 animate-pulse rounded bg-slate-100" />
@@ -63,10 +63,10 @@ export default function ProductDetail() {
   const specs = Object.entries(product.specs).filter(([, value]) => value);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-14">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-100 shadow-[0_20px_50px_-24px_rgba(15,23,42,0.25)]">
             {product.images[activeImage] && (
               <StorageImage
                 src={product.images[activeImage]}
@@ -83,8 +83,8 @@ export default function ProductDetail() {
                 <button
                   key={img + i}
                   onClick={() => setActiveImage(i)}
-                  className={`relative h-16 w-20 overflow-hidden rounded-lg border-2 ${
-                    activeImage === i ? "border-brand" : "border-transparent"
+                  className={`relative h-16 w-20 overflow-hidden rounded-xl border-2 transition-colors ${
+                    activeImage === i ? "border-brand" : "border-transparent hover:border-slate-200"
                   }`}
                 >
                   <StorageImage src={img} alt="" fill unoptimized className="object-cover" />
@@ -95,15 +95,15 @@ export default function ProductDetail() {
         </div>
 
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             {product.brand}
           </p>
-          <h1 className="mt-1 text-2xl font-extrabold text-slate-900 sm:text-3xl">
+          <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
             {product.name}
           </h1>
 
           <div className="mt-4 flex items-baseline gap-3">
-            <span className="text-3xl font-extrabold text-slate-900">
+            <span className="text-3xl font-bold tracking-tight text-slate-900">
               {formatINR(product.price)}
             </span>
             {product.originalPrice && (
@@ -112,18 +112,18 @@ export default function ProductDetail() {
               </span>
             )}
             {discount && (
-              <span className="rounded-full bg-brand px-2 py-1 text-xs font-bold text-white">
+              <span className="rounded-full bg-brand px-2.5 py-1 text-xs font-bold text-white">
                 -{discount}% vs new
               </span>
             )}
           </div>
 
           {product.conditionGrade && (
-            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm font-bold text-slate-900">
+            <div className="mt-5 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-100">
+              <p className="text-sm font-semibold text-slate-900">
                 Condition: {product.conditionGrade}
               </p>
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs leading-relaxed text-slate-500">
                 {conditionDescriptions[product.conditionGrade]}
               </p>
             </div>
@@ -151,7 +151,7 @@ export default function ProductDetail() {
                 }}
               />
             ) : (
-              <div className="rounded-lg bg-slate-100 px-6 py-3 text-center text-sm font-semibold text-slate-500">
+              <div className="rounded-full bg-slate-100 px-6 py-3.5 text-center text-sm font-semibold text-slate-500">
                 Currently sold out
               </div>
             )}
