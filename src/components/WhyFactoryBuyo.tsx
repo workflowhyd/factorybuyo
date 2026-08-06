@@ -10,7 +10,7 @@ const features = [
   },
   {
     title: "6-Month Warranty",
-    desc: "Every laptop we sell — gaming or refurbished — is covered for 6 months from the day you collect it.",
+    desc: "Every laptop we sell — gaming or pre-owned — is covered for 6 months from the day you collect it.",
     icon: ShieldCheck,
   },
   {

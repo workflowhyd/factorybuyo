@@ -23,8 +23,8 @@ export default function Home() {
         promoImage="/placeholders/asus-rog-strix-g16.svg"
       />
       <ProductCarousel
-        title="Certified Refurbished Laptops"
-        href="/refurbished-laptops"
+        title="Certified Pre-Owned Laptops"
+        href="/preowned-laptops"
         category="refurbished"
         promoHeadline="Like new, less the price."
         promoSub="40-point tested, 6-month warranty, a fraction of the cost."

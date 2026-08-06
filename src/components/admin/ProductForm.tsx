@@ -200,7 +200,7 @@ export default function ProductForm({
             className="w-full rounded-lg border border-slate-300 px-3 py-2"
           >
             <option value="gaming">Gaming Laptop</option>
-            <option value="refurbished">Refurbished Laptop</option>
+            <option value="refurbished">Pre-Owned Laptop</option>
           </select>
         </label>
 

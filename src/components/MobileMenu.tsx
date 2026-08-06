@@ -13,7 +13,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 const links = [
   { label: "Hot Deals", href: "/hot-deals", icon: Flame },
   { label: "Gaming Laptops", href: "/gaming-laptops", icon: Gamepad2 },
-  { label: "Refurbished Laptops", href: "/refurbished-laptops", icon: Recycle },
+  { label: "Pre-Owned Laptops", href: "/preowned-laptops", icon: Recycle },
   { label: "Need Help?", href: buildGeneralWhatsAppLink(), icon: WhatsAppIcon, external: true },
 ];
 

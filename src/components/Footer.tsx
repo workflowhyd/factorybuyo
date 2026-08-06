@@ -9,7 +9,7 @@ export default function Footer() {
             Factory<span className="text-brand">Buyo</span>
           </p>
           <p className="mt-3 text-sm text-slate-400">
-            Trending gaming laptops and certified refurbished laptops, hand-picked for the Indian
+            Trending gaming laptops and certified pre-owned laptops, hand-picked for the Indian
             market. Reserve online, confirm on WhatsApp.
           </p>
         </div>
@@ -23,8 +23,8 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/refurbished-laptops" className="hover:text-white">
-                Refurbished Laptops
+              <Link href="/preowned-laptops" className="hover:text-white">
+                Pre-Owned Laptops
               </Link>
             </li>
           </ul>

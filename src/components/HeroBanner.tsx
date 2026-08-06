@@ -16,7 +16,7 @@ const slides = [
   {
     image: "/hero-slide-2.jpg",
     alt: "Pre-owned laptops — great laptops, greater value",
-    href: "/refurbished-laptops",
+    href: "/preowned-laptops",
   },
 ];
 

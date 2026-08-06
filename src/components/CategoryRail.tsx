@@ -12,8 +12,8 @@ const categories = [
     icon: Gamepad2,
   },
   {
-    label: "Refurbished Laptops",
-    href: "/refurbished-laptops",
+    label: "Pre-Owned Laptops",
+    href: "/preowned-laptops",
     icon: Recycle,
   },
   {

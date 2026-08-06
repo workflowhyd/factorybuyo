@@ -141,7 +141,7 @@ export default function AdminDashboard({
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-slate-900">{product.name}</p>
                     <p className="text-xs text-slate-500">
-                      {product.category === "gaming" ? "Gaming" : "Refurbished"} ·{" "}
+                      {product.category === "gaming" ? "Gaming" : "Pre-Owned"} ·{" "}
                       {formatPrice(product.price)}
                       {!product.inStock && " · Sold out"}
                       {product.featured && " · Featured"}

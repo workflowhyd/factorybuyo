@@ -9,7 +9,7 @@ import RegionSwitcher from "@/components/RegionSwitcher";
 const links = [
   { label: "Hot Deals", href: "/hot-deals", icon: Flame, className: "text-brand" },
   { label: "Gaming Laptops", href: "/gaming-laptops" },
-  { label: "Refurbished Laptops", href: "/refurbished-laptops" },
+  { label: "Pre-Owned Laptops", href: "/preowned-laptops" },
 ];
 
 export default function CategoryBanner({ scrolled = false }: { scrolled?: boolean }) {

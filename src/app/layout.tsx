@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FactoryBuyo — Gaming & Refurbished Laptops",
+  title: "FactoryBuyo — Gaming & Pre-Owned Laptops",
   description:
-    "Trending gaming laptops and certified refurbished laptops for the Indian market. Reserve online, confirm on WhatsApp.",
+    "Trending gaming laptops and certified pre-owned laptops for the Indian market. Reserve online, confirm on WhatsApp.",
 };
 
 export default function RootLayout({
