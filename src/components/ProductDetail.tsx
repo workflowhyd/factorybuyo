@@ -70,15 +70,17 @@ export default function ProductDetail() {
     <div className="mx-auto max-w-6xl px-4 py-12 sm:py-14">
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-100 shadow-[0_20px_50px_-24px_rgba(15,23,42,0.25)]">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-50 shadow-[0_20px_50px_-24px_rgba(15,23,42,0.25)]">
             {product.images[activeImage] && (
-              <StorageImage
-                src={product.images[activeImage]}
-                alt={product.name}
-                fill
-                unoptimized
-                className="object-cover"
-              />
+              <div className="absolute inset-6 sm:inset-8">
+                <StorageImage
+                  src={product.images[activeImage]}
+                  alt={product.name}
+                  fill
+                  unoptimized
+                  className="object-contain"
+                />
+              </div>
             )}
           </div>
           {product.images.length > 1 && (
@@ -87,11 +89,13 @@ export default function ProductDetail() {
                 <button
                   key={img + i}
                   onClick={() => setActiveImage(i)}
-                  className={`relative h-16 w-20 overflow-hidden rounded-xl border-2 transition-colors ${
+                  className={`relative h-16 w-20 overflow-hidden rounded-xl border-2 bg-slate-50 transition-colors ${
                     activeImage === i ? "border-brand" : "border-transparent hover:border-slate-200"
                   }`}
                 >
-                  <StorageImage src={img} alt="" fill unoptimized className="object-cover" />
+                  <div className="absolute inset-1.5">
+                    <StorageImage src={img} alt="" fill unoptimized className="object-contain" />
+                  </div>
                 </button>
               ))}
             </div>
