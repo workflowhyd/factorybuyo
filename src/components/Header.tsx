@@ -8,6 +8,7 @@ import { Search } from "lucide-react";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import CategoryBanner from "@/components/CategoryBanner";
+import MobileMenu from "@/components/MobileMenu";
 
 function SearchBar({ className }: { className?: string }) {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function Header() {
         }`}
       >
         <div
-          className={`mx-auto flex max-w-6xl items-center gap-3 px-4 transition-all duration-300 ease-out sm:gap-4 ${
+          className={`mx-auto hidden max-w-6xl items-center gap-3 px-4 transition-all duration-300 ease-out sm:gap-4 md:flex ${
             scrolled ? "py-2 sm:py-2.5" : "py-3 sm:py-4"
           }`}
         >
@@ -91,29 +92,50 @@ export default function Header() {
             />
           </Link>
 
-          <SearchBar className="hidden md:flex flex-1 max-w-md" />
+          <SearchBar className="flex flex-1 max-w-md" />
 
-          <a
-            href={buildGeneralWhatsAppLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-auto hidden items-center gap-2 whitespace-nowrap rounded-full bg-whatsapp px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 sm:inline-flex"
-          >
-            Chat on WhatsApp
-          </a>
-        </div>
-
-        <div className="flex items-center gap-2.5 px-4 pb-3 md:hidden">
-          <SearchBar className="flex-1" />
           <a
             href={buildGeneralWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
-            className="flex-shrink-0 rounded-full bg-whatsapp p-3 text-white shadow-sm transition-transform active:scale-90"
+            className="ml-auto inline-flex flex-shrink-0 items-center justify-center rounded-full bg-whatsapp p-3 text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
           >
             <WhatsAppIcon className="h-5 w-5" />
           </a>
+        </div>
+
+        <div
+          className={`mx-auto flex max-w-6xl items-center px-2 transition-all duration-300 ease-out md:hidden ${
+            scrolled ? "py-1.5" : "py-2.5"
+          }`}
+        >
+          <MobileMenu />
+
+          <Link href="/" className="relative h-11 flex-1">
+            <Image
+              src="/logo.png"
+              alt="FactoryBuyo"
+              fill
+              unoptimized
+              priority
+              className="object-contain object-center"
+            />
+          </Link>
+
+          <a
+            href={buildGeneralWhatsAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
+            className="flex-shrink-0 rounded-full bg-whatsapp p-2.5 text-white shadow-sm transition-transform active:scale-90"
+          >
+            <WhatsAppIcon className="h-5 w-5" />
+          </a>
+        </div>
+
+        <div className="px-4 pb-3 md:hidden">
+          <SearchBar className="flex" />
         </div>
       </div>
 

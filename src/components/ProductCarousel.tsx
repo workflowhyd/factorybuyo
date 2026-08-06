@@ -47,20 +47,24 @@ export default function ProductCarousel({
         <Carousel>
           <Link
             href={href}
-            className="group relative flex w-[190px] flex-[0_0_auto] flex-col justify-end overflow-hidden rounded-2xl p-4 text-white shadow-[0_20px_40px_-16px_rgba(58,14,109,0.4)] transition-all duration-400 ease-out hover:-translate-y-1.5 sm:w-[270px] sm:p-6"
+            className="group relative flex w-[190px] flex-[0_0_auto] flex-col justify-end rounded-2xl text-white shadow-[0_20px_40px_-16px_rgba(58,14,109,0.4)] transition-all duration-400 ease-out hover:-translate-y-1.5 sm:w-[270px]"
           >
-            <Image
-              src={promoImage}
-              alt=""
-              fill
-              unoptimized
-              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(58,14,109,0.1)_0%,rgba(58,14,109,0.92)_100%)]" />
-            <p className="relative text-base font-bold leading-tight tracking-tight sm:text-xl">
-              {promoHeadline}
-            </p>
-            <p className="relative mt-1.5 text-xs text-white/80 sm:mt-2 sm:text-sm">{promoSub}</p>
+            <div className="absolute inset-0 overflow-hidden rounded-2xl">
+              <Image
+                src={promoImage}
+                alt=""
+                fill
+                unoptimized
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(58,14,109,0.1)_0%,rgba(58,14,109,0.92)_100%)]" />
+            </div>
+            <div className="relative p-4 sm:p-6">
+              <p className="text-base font-bold leading-tight tracking-tight sm:text-xl">
+                {promoHeadline}
+              </p>
+              <p className="mt-1.5 text-xs text-white/80 sm:mt-2 sm:text-sm">{promoSub}</p>
+            </div>
           </Link>
 
           {products === undefined &&
