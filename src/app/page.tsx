@@ -4,6 +4,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import WhyFactoryBuyo from "@/components/WhyFactoryBuyo";
 import Testimonials from "@/components/Testimonials";
 import HeroBanner from "@/components/HeroBanner";
+import LazySection from "@/components/LazySection";
 
 export default function Home() {
   return (
@@ -22,20 +23,29 @@ export default function Home() {
         promoSub="Hand-picked gaming laptops with the specs that actually matter."
         promoImage="/placeholders/asus-rog-strix-g16.svg"
       />
-      <ProductCarousel
-        title="Certified Pre-Owned Laptops"
-        href="/preowned-laptops"
-        category="refurbished"
-        promoHeadline="Like new, less the price."
-        promoSub="40-point tested, 6-month warranty, a fraction of the cost."
-        promoImage="/placeholders/dell-latitude-7400.svg"
-      />
 
-      <WhyFactoryBuyo />
+      <LazySection minHeight={460}>
+        <ProductCarousel
+          title="Certified Pre-Owned Laptops"
+          href="/preowned-laptops"
+          category="refurbished"
+          promoHeadline="Like new, less the price."
+          promoSub="40-point tested, 6-month warranty, a fraction of the cost."
+          promoImage="/placeholders/dell-latitude-7400.svg"
+        />
+      </LazySection>
 
-      <Testimonials />
+      <LazySection minHeight={480}>
+        <WhyFactoryBuyo />
+      </LazySection>
 
-      <TrustBadges />
+      <LazySection minHeight={420}>
+        <Testimonials />
+      </LazySection>
+
+      <LazySection minHeight={260}>
+        <TrustBadges />
+      </LazySection>
     </div>
   );
 }
