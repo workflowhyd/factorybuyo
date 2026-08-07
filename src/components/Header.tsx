@@ -46,10 +46,25 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    function onScroll() {
-      setScrolled(window.scrollY > 24);
+    let ticking = false;
+
+    function update() {
+      ticking = false;
+      setScrolled((prev) => {
+        const y = window.scrollY;
+        // Hysteresis: different thresholds for entering/leaving the
+        // scrolled state so hovering near one value doesn't flicker.
+        return prev ? y > 8 : y > 32;
+      });
     }
-    onScroll();
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
