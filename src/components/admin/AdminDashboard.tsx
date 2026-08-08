@@ -9,6 +9,10 @@ import { clearAdminToken } from "@/lib/adminSession";
 import StorageImage from "@/components/StorageImage";
 import ProductForm from "./ProductForm";
 import TestimonialsPanel from "./TestimonialsPanel";
+import TrustBadgesPanel from "./TrustBadgesPanel";
+import AboutPanel from "./AboutPanel";
+import ContactPanel from "./ContactPanel";
+import PolicyPanel from "./PolicyPanel";
 
 // Keep in sync with MAX_PRODUCTS in convex/products.ts — that's the
 // enforced limit, this is just for the UI hint.
@@ -21,7 +25,9 @@ export default function AdminDashboard({
   token: string;
   onLogout: () => void;
 }) {
-  const [tab, setTab] = useState<"products" | "testimonials">("products");
+  const [tab, setTab] = useState<
+    "products" | "testimonials" | "trustBadges" | "about" | "contact" | "policies"
+  >("products");
   const products = useQuery(api.products.list, {});
   const removeProduct = useMutation(api.products.remove);
   const [editing, setEditing] = useState<Doc<"products"> | "new" | null>(null);
@@ -102,6 +108,46 @@ export default function AdminDashboard({
         >
           Testimonials
         </button>
+        <button
+          onClick={() => setTab("trustBadges")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "trustBadges"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Trust Badges
+        </button>
+        <button
+          onClick={() => setTab("about")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "about"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          About Page
+        </button>
+        <button
+          onClick={() => setTab("contact")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "contact"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Contact Info
+        </button>
+        <button
+          onClick={() => setTab("policies")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "policies"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Policy Pages
+        </button>
       </div>
 
       {tab === "products" && (
@@ -168,6 +214,10 @@ export default function AdminDashboard({
       )}
 
       {tab === "testimonials" && <TestimonialsPanel token={token} />}
+      {tab === "trustBadges" && <TrustBadgesPanel token={token} />}
+      {tab === "about" && <AboutPanel token={token} />}
+      {tab === "contact" && <ContactPanel token={token} />}
+      {tab === "policies" && <PolicyPanel token={token} />}
     </div>
   );
 }

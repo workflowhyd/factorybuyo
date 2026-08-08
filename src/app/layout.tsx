@@ -4,6 +4,7 @@ import "./globals.css";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { RegionProvider } from "@/context/RegionContext";
 import Header from "@/components/Header";
+import TrustBadges from "@/components/TrustBadges";
 import Footer from "@/components/Footer";
 
 const geistSans = Geist({
@@ -37,6 +38,7 @@ export default function RootLayout({
           <RegionProvider>
             <Header />
             <main className="flex-1">{children}</main>
+            <TrustBadges />
             <Footer />
           </RegionProvider>
         </ConvexClientProvider>

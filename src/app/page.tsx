@@ -42,10 +42,6 @@ export default function Home() {
       <LazySection minHeight={420}>
         <Testimonials />
       </LazySection>
-
-      <LazySection minHeight={260}>
-        <TrustBadges />
-      </LazySection>
     </div>
   );
 }

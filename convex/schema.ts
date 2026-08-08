@@ -40,4 +40,52 @@ export default defineSchema({
     rating: v.number(),
     createdAt: v.number(),
   }),
+
+  trustBadges: defineTable({
+    icon: v.string(),
+    title: v.string(),
+    desc: v.string(),
+    href: v.optional(v.string()),
+    order: v.number(),
+    hidden: v.boolean(),
+  }),
+
+  aboutHero: defineTable({
+    eyebrow: v.string(),
+    title: v.string(),
+    subtitle: v.string(),
+  }),
+
+  aboutPanels: defineTable({
+    title: v.string(),
+    body: v.string(),
+    order: v.number(),
+    hidden: v.boolean(),
+  }),
+
+  contactInfo: defineTable({
+    email: v.string(),
+    marketsNote: v.string(),
+    phone: v.optional(v.string()),
+    hours: v.optional(v.string()),
+    address: v.optional(v.string()),
+  }),
+
+  policyPages: defineTable({
+    slug: v.union(
+      v.literal("privacy-policy"),
+      v.literal("terms-and-conditions"),
+      v.literal("cancellation-policy")
+    ),
+    title: v.string(),
+    intro: v.optional(v.string()),
+    lastUpdated: v.string(),
+  }).index("by_slug", ["slug"]),
+
+  policySections: defineTable({
+    pageSlug: v.string(),
+    heading: v.string(),
+    body: v.string(),
+    order: v.number(),
+  }).index("by_page", ["pageSlug"]),
 });
