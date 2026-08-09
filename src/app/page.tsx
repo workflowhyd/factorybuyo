@@ -1,5 +1,6 @@
 import TrustBadges from "@/components/TrustBadges";
 import CategoryRail from "@/components/CategoryRail";
+import BrandSwitcher from "@/components/BrandSwitcher";
 import ProductCarousel from "@/components/ProductCarousel";
 import WhyFactoryBuyo from "@/components/WhyFactoryBuyo";
 import Testimonials from "@/components/Testimonials";
@@ -15,6 +16,8 @@ export default function Home() {
       <TrustBadges />
 
       <CategoryRail />
+
+      <BrandSwitcher />
 
       <ProductCarousel
         title="Trending Gaming Laptops"

@@ -25,7 +25,7 @@ export default function FAQ() {
   const selectedId = openId === null ? (defaultId ?? null) : openId || null;
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
+    <section id="faq" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-14 sm:py-20">
       <Reveal className="mb-8 text-center sm:mb-12">
         {settings === undefined ? (
           <div className="mx-auto max-w-md space-y-2.5">

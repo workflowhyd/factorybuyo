@@ -14,6 +14,8 @@ import AboutPanel from "./AboutPanel";
 import ContactPanel from "./ContactPanel";
 import PolicyPanel from "./PolicyPanel";
 import FaqPanel from "./FaqPanel";
+import BrandsPanel from "./BrandsPanel";
+import MenuPanel from "./MenuPanel";
 
 // Keep in sync with MAX_PRODUCTS in convex/products.ts — that's the
 // enforced limit, this is just for the UI hint.
@@ -27,7 +29,15 @@ export default function AdminDashboard({
   onLogout: () => void;
 }) {
   const [tab, setTab] = useState<
-    "products" | "testimonials" | "trustBadges" | "about" | "contact" | "policies" | "faq"
+    | "products"
+    | "testimonials"
+    | "trustBadges"
+    | "about"
+    | "contact"
+    | "policies"
+    | "faq"
+    | "brands"
+    | "menu"
   >("products");
   const products = useQuery(api.products.list, {});
   const removeProduct = useMutation(api.products.remove);
@@ -88,7 +98,7 @@ export default function AdminDashboard({
         </div>
       </div>
 
-      <div className="mb-6 flex gap-2 border-b border-slate-200">
+      <div className="mb-6 flex flex-wrap gap-2 border-b border-slate-200">
         <button
           onClick={() => setTab("products")}
           className={`px-4 py-2 text-sm font-semibold ${
@@ -158,6 +168,26 @@ export default function AdminDashboard({
           }`}
         >
           FAQ
+        </button>
+        <button
+          onClick={() => setTab("brands")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "brands"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Brands
+        </button>
+        <button
+          onClick={() => setTab("menu")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "menu"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Navigation
         </button>
       </div>
 
@@ -230,6 +260,8 @@ export default function AdminDashboard({
       {tab === "contact" && <ContactPanel token={token} />}
       {tab === "policies" && <PolicyPanel token={token} />}
       {tab === "faq" && <FaqPanel token={token} />}
+      {tab === "brands" && <BrandsPanel token={token} />}
+      {tab === "menu" && <MenuPanel token={token} />}
     </div>
   );
 }

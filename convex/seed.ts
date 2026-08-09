@@ -342,3 +342,93 @@ export const seedFaq = internalMutation({
     return `Seeded ${faqs.length} FAQs and settings.`;
   },
 });
+
+// Run once after deploying: npx convex run seed:seedBrands
+export const seedBrands = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    if (await ctx.db.query("brands").first()) {
+      return "brands already exist, skipping.";
+    }
+
+    const brands = [
+      { name: "Dell", logo: "/placeholders/brands/dell.svg" },
+      { name: "HP", logo: "/placeholders/brands/hp.svg" },
+      { name: "Lenovo", logo: "/placeholders/brands/lenovo.svg" },
+      { name: "Acer", logo: "/placeholders/brands/acer.svg" },
+      { name: "Apple", logo: "/placeholders/brands/apple.svg" },
+      { name: "Microsoft", logo: "/placeholders/brands/microsoft.svg" },
+    ];
+
+    for (let i = 0; i < brands.length; i++) {
+      await ctx.db.insert("brands", {
+        name: brands[i].name,
+        logo: brands[i].logo,
+        order: i,
+        hidden: false,
+        mode: "auto",
+        matchBrand: brands[i].name,
+        sortBy: "default",
+        onlyInStock: true,
+        visibleCount: 8,
+        productIds: [],
+      });
+    }
+
+    await ctx.db.insert("brandSwitcherSettings", {
+      heading: "Shop by brand",
+      intro: "Pick a brand to see what we currently have in stock.",
+      ctaLabel: "See all laptops",
+      ctaHref: "/search",
+    });
+
+    return `Seeded ${brands.length} brands and settings.`;
+  },
+});
+
+// Run once after deploying: npx convex run seed:seedMenu
+export const seedMenu = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    if (await ctx.db.query("menuItems").first()) {
+      return "menuItems already exist, skipping.";
+    }
+
+    const categories = [
+      { label: "Gaming Laptops", href: "/gaming-laptops", icon: "Gamepad2" },
+      { label: "Pre-Owned Laptops", href: "/preowned-laptops", icon: "Recycle" },
+      { label: "Hot Deals", href: "/hot-deals", icon: "Flame" },
+    ];
+    for (let i = 0; i < categories.length; i++) {
+      await ctx.db.insert("menuItems", {
+        kind: "category",
+        label: categories[i].label,
+        href: categories[i].href,
+        icon: categories[i].icon,
+        order: i,
+        hidden: false,
+      });
+    }
+
+    const info = [
+      { label: "About Us", href: "/about", icon: "Info" },
+      { label: "Terms and Conditions", href: "/terms-and-conditions", icon: "FileText" },
+      { label: "Cancellation Policy", href: "/cancellation-policy", icon: "RotateCcw" },
+      { label: "Privacy Policy", href: "/privacy-policy", icon: "ShieldCheck" },
+      { label: "Contact Information", href: "/contact", icon: "Mail" },
+      { label: "FAQs", href: "/#faq", icon: "HelpCircle" },
+    ];
+    for (let i = 0; i < info.length; i++) {
+      await ctx.db.insert("menuItems", {
+        kind: "info",
+        label: info[i].label,
+        href: info[i].href,
+        icon: info[i].icon,
+        order: i,
+        hidden: false,
+      });
+    }
+
+    return `Seeded ${categories.length} categories and ${info.length} info links.`;
+  },
+});

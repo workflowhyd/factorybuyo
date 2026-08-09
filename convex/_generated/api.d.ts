@@ -10,9 +10,11 @@
 
 import type * as about from "../about.js";
 import type * as auth from "../auth.js";
+import type * as brands from "../brands.js";
 import type * as contact from "../contact.js";
 import type * as faq from "../faq.js";
 import type * as files from "../files.js";
+import type * as menu from "../menu.js";
 import type * as policy from "../policy.js";
 import type * as products from "../products.js";
 import type * as seed from "../seed.js";
@@ -29,9 +31,11 @@ import type {
 declare const fullApi: ApiFromModules<{
   about: typeof about;
   auth: typeof auth;
+  brands: typeof brands;
   contact: typeof contact;
   faq: typeof faq;
   files: typeof files;
+  menu: typeof menu;
   policy: typeof policy;
   products: typeof products;
   seed: typeof seed;

@@ -103,4 +103,41 @@ export default defineSchema({
     ctaEnabled: v.boolean(),
     ctaText: v.string(),
   }),
+
+  brands: defineTable({
+    name: v.string(),
+    logo: v.string(),
+    order: v.number(),
+    hidden: v.boolean(),
+    mode: v.union(v.literal("auto"), v.literal("manual")),
+    matchBrand: v.optional(v.string()),
+    matchCategory: v.optional(v.union(v.literal("gaming"), v.literal("refurbished"))),
+    sortBy: v.union(v.literal("newest"), v.literal("featured"), v.literal("default")),
+    onlyInStock: v.boolean(),
+    visibleCount: v.number(),
+    productIds: v.array(v.id("products")),
+  }),
+
+  brandSwitcherSettings: defineTable({
+    heading: v.string(),
+    intro: v.optional(v.string()),
+    ctaLabel: v.string(),
+    ctaHref: v.string(),
+  }),
+
+  menuItems: defineTable({
+    kind: v.union(v.literal("category"), v.literal("info")),
+    label: v.string(),
+    href: v.string(),
+    icon: v.optional(v.string()),
+    order: v.number(),
+    hidden: v.boolean(),
+  }),
+
+  menuSubitems: defineTable({
+    parentId: v.id("menuItems"),
+    label: v.string(),
+    href: v.string(),
+    order: v.number(),
+  }).index("by_parent", ["parentId"]),
 });
