@@ -46,9 +46,14 @@ export default defineSchema({
         })
       )
     ),
+    searchText: v.optional(v.string()),
   })
     .index("by_slug", ["slug"])
-    .index("by_category", ["category"]),
+    .index("by_category", ["category"])
+    .searchIndex("search_text", {
+      searchField: "searchText",
+      filterFields: ["category", "inStock"],
+    }),
 
   sessions: defineTable({
     token: v.string(),
@@ -192,5 +197,51 @@ export default defineSchema({
     showReviews: v.boolean(),
     showQA: v.boolean(),
     showCompare: v.boolean(),
+  }),
+
+  filterDefs: defineTable({
+    category: v.union(v.literal("gaming"), v.literal("refurbished")),
+    key: v.union(
+      v.literal("brand"),
+      v.literal("price"),
+      v.literal("cpu"),
+      v.literal("gpu"),
+      v.literal("ram"),
+      v.literal("storage"),
+      v.literal("display"),
+      v.literal("conditionGrade"),
+      v.literal("inStock")
+    ),
+    label: v.string(),
+    order: v.number(),
+    enabled: v.boolean(),
+  }).index("by_category", ["category"]),
+
+  categoryPromos: defineTable({
+    category: v.union(v.literal("gaming"), v.literal("refurbished")),
+    image: v.string(),
+    headline: v.string(),
+    sub: v.optional(v.string()),
+    ctaText: v.optional(v.string()),
+    ctaHref: v.optional(v.string()),
+    order: v.number(),
+    enabled: v.boolean(),
+    startsAt: v.optional(v.number()),
+    endsAt: v.optional(v.number()),
+  }).index("by_category", ["category"]),
+
+  searchSynonyms: defineTable({
+    term: v.string(),
+    synonym: v.string(),
+  }),
+
+  popularSearches: defineTable({
+    label: v.string(),
+    query: v.string(),
+    order: v.number(),
+  }),
+
+  searchSettings: defineTable({
+    displayLimit: v.number(),
   }),
 });

@@ -31,6 +31,31 @@ const variantValidator = v.object({
 
 export const MAX_PRODUCTS = 20;
 
+export function buildSearchText(args: {
+  name: string;
+  brand: string;
+  category: string;
+  conditionGrade?: string;
+  sku?: string;
+  specs: { cpu?: string; gpu?: string; ram?: string; storage?: string; display?: string };
+  variants?: { label: string; sku: string }[];
+}): string {
+  const parts = [
+    args.name,
+    args.brand,
+    args.category,
+    args.conditionGrade,
+    args.sku,
+    args.specs.cpu,
+    args.specs.gpu,
+    args.specs.ram,
+    args.specs.storage,
+    args.specs.display,
+    ...(args.variants ?? []).flatMap((v) => [v.label, v.sku]),
+  ];
+  return parts.filter(Boolean).join(" ").toLowerCase();
+}
+
 export const list = query({
   args: {
     category: v.optional(v.union(v.literal("gaming"), v.literal("refurbished"))),
@@ -123,6 +148,7 @@ export const add = mutation({
       included: args.included,
       variants: args.variants,
       createdAt: Date.now(),
+      searchText: buildSearchText(args),
     });
   },
 });
@@ -169,6 +195,7 @@ export const update = mutation({
       highlights: args.highlights,
       included: args.included,
       variants: args.variants,
+      searchText: buildSearchText(args),
     });
   },
 });

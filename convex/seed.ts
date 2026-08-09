@@ -1,5 +1,6 @@
 import { internalMutation } from "./_generated/server";
 import { seedProducts } from "./seedData";
+import { buildSearchText } from "./products";
 import type { Id } from "./_generated/dataModel";
 
 // Run once after deploying: npx convex run seed:seedProducts
@@ -463,5 +464,104 @@ export const seedRegions = internalMutation({
     });
 
     return "Seeded 2 regions.";
+  },
+});
+
+// Run once after deploying (and again any time products were added before
+// this feature shipped): npx convex run seed:backfillSearchText
+export const backfillSearchText = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const products = await ctx.db.query("products").collect();
+    let count = 0;
+    for (const p of products) {
+      if (p.searchText) continue;
+      await ctx.db.patch(p._id, { searchText: buildSearchText(p) });
+      count++;
+    }
+    return `Backfilled searchText on ${count} of ${products.length} products.`;
+  },
+});
+
+// Run once after deploying: npx convex run seed:seedFilterDefs
+export const seedFilterDefs = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    if (await ctx.db.query("filterDefs").first()) {
+      return "filterDefs already exist, skipping.";
+    }
+    const gaming: { key: "brand" | "price" | "cpu" | "ram" | "storage" | "inStock"; label: string }[] = [
+      { key: "brand", label: "Brand" },
+      { key: "price", label: "Price" },
+      { key: "cpu", label: "Processor" },
+      { key: "ram", label: "RAM" },
+      { key: "storage", label: "Storage" },
+      { key: "inStock", label: "Available now" },
+    ];
+    const refurbished: { key: "brand" | "price" | "conditionGrade" | "ram" | "storage" | "inStock"; label: string }[] = [
+      { key: "brand", label: "Brand" },
+      { key: "price", label: "Price" },
+      { key: "conditionGrade", label: "Condition" },
+      { key: "ram", label: "RAM" },
+      { key: "storage", label: "Storage" },
+      { key: "inStock", label: "Available now" },
+    ];
+    for (let i = 0; i < gaming.length; i++) {
+      await ctx.db.insert("filterDefs", { category: "gaming", key: gaming[i].key, label: gaming[i].label, order: i, enabled: true });
+    }
+    for (let i = 0; i < refurbished.length; i++) {
+      await ctx.db.insert("filterDefs", { category: "refurbished", key: refurbished[i].key, label: refurbished[i].label, order: i, enabled: true });
+    }
+    return `Seeded ${gaming.length + refurbished.length} filter definitions.`;
+  },
+});
+
+// Run once after deploying: npx convex run seed:seedSearch
+export const seedSearch = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const results: string[] = [];
+
+    if (await ctx.db.query("searchSettings").first()) {
+      results.push("searchSettings already exists, skipping.");
+    } else {
+      await ctx.db.insert("searchSettings", { displayLimit: 6 });
+      results.push("Seeded search settings.");
+    }
+
+    if (await ctx.db.query("searchSynonyms").first()) {
+      results.push("searchSynonyms already exist, skipping.");
+    } else {
+      const pairs = [
+        { term: "notebook", synonym: "laptop" },
+        { term: "ssd", synonym: "storage" },
+        { term: "hdd", synonym: "storage" },
+        { term: "graphics", synonym: "gpu" },
+        { term: "processor", synonym: "cpu" },
+        { term: "refurbished", synonym: "pre-owned" },
+        { term: "used", synonym: "pre-owned" },
+      ];
+      for (const p of pairs) {
+        await ctx.db.insert("searchSynonyms", p);
+      }
+      results.push(`Seeded ${pairs.length} synonyms.`);
+    }
+
+    if (await ctx.db.query("popularSearches").first()) {
+      results.push("popularSearches already exist, skipping.");
+    } else {
+      const popular = [
+        { label: "Gaming laptops", query: "gaming" },
+        { label: "Pre-owned laptops", query: "pre-owned" },
+        { label: "Dell", query: "dell" },
+        { label: "16GB RAM", query: "16gb" },
+      ];
+      for (let i = 0; i < popular.length; i++) {
+        await ctx.db.insert("popularSearches", { label: popular[i].label, query: popular[i].query, order: i });
+      }
+      results.push(`Seeded ${popular.length} popular searches.`);
+    }
+
+    return results.join(" ");
   },
 });

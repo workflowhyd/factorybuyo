@@ -19,6 +19,9 @@ import MenuPanel from "./MenuPanel";
 import RegionsPanel from "./RegionsPanel";
 import ProductQAPanel from "./ProductQAPanel";
 import ProductDetailSettingsPanel from "./ProductDetailSettingsPanel";
+import FilterDefsPanel from "./FilterDefsPanel";
+import CategoryPromosPanel from "./CategoryPromosPanel";
+import SearchSettingsPanel from "./SearchSettingsPanel";
 
 // Keep in sync with MAX_PRODUCTS in convex/products.ts — that's the
 // enforced limit, this is just for the UI hint.
@@ -44,6 +47,9 @@ export default function AdminDashboard({
     | "regions"
     | "productQA"
     | "productDetail"
+    | "filters"
+    | "promos"
+    | "search"
   >("products");
   const products = useQuery(api.products.list, {});
   const removeProduct = useMutation(api.products.remove);
@@ -225,6 +231,36 @@ export default function AdminDashboard({
         >
           Product Page
         </button>
+        <button
+          onClick={() => setTab("filters")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "filters"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Filters
+        </button>
+        <button
+          onClick={() => setTab("promos")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "promos"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Category Promos
+        </button>
+        <button
+          onClick={() => setTab("search")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "search"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Search
+        </button>
       </div>
 
       {tab === "products" && (
@@ -301,6 +337,9 @@ export default function AdminDashboard({
       {tab === "regions" && <RegionsPanel token={token} />}
       {tab === "productQA" && <ProductQAPanel token={token} />}
       {tab === "productDetail" && <ProductDetailSettingsPanel token={token} />}
+      {tab === "filters" && <FilterDefsPanel token={token} />}
+      {tab === "promos" && <CategoryPromosPanel token={token} />}
+      {tab === "search" && <SearchSettingsPanel token={token} />}
     </div>
   );
 }

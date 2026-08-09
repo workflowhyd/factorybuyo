@@ -2,46 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import CategoryBanner from "@/components/CategoryBanner";
 import MobileMenu from "@/components/MobileMenu";
+import PredictiveSearch from "@/components/PredictiveSearch";
 import { useRegion } from "@/context/RegionContext";
-
-function SearchBar({ className }: { className?: string }) {
-  const router = useRouter();
-  const [query, setQuery] = useState("");
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const q = query.trim();
-    router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className={className}>
-      <div className="relative w-full">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="What are you looking for…."
-          className="w-full rounded-full bg-slate-100 py-3 pl-4 pr-12 text-sm text-slate-900 placeholder:text-slate-400 transition-shadow focus:outline-none focus:ring-2 focus:ring-brand"
-        />
-        <button
-          type="submit"
-          aria-label="Search"
-          className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-slate-900 p-2.5 text-white transition-all hover:scale-105 hover:bg-slate-800 active:scale-95"
-        >
-          <Search className="h-4 w-4" />
-        </button>
-      </div>
-    </form>
-  );
-}
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -109,7 +76,7 @@ export default function Header() {
             />
           </Link>
 
-          <SearchBar className="flex flex-1 max-w-md" />
+          <PredictiveSearch className="flex flex-1 max-w-md" />
 
           <a
             href={buildGeneralWhatsAppLink(whatsappNumber)}
@@ -152,7 +119,7 @@ export default function Header() {
         </div>
 
         <div className="px-4 pb-3 md:hidden">
-          <SearchBar className="flex" />
+          <PredictiveSearch className="flex" />
         </div>
       </div>
 

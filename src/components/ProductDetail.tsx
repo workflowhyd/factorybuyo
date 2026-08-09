@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import StorageImage from "@/components/StorageImage";
@@ -10,6 +10,7 @@ import { api } from "../../convex/_generated/api";
 import { formatPrice, discountPercent } from "@/lib/format";
 import { getRegionalPrice, isAvailableInRegion } from "@/lib/pricing";
 import { useRegion } from "@/context/RegionContext";
+import { addRecentlyViewed } from "@/lib/recentlyViewed";
 import WhatsAppReserveButton from "@/components/WhatsAppReserveButton";
 import Reveal from "@/components/motion/Reveal";
 import type { Doc } from "../../convex/_generated/dataModel";
@@ -123,6 +124,12 @@ export default function ProductDetail() {
     api.products.getSimilar,
     product ? { productId: product._id } : "skip"
   );
+
+  useEffect(() => {
+    if (product) {
+      addRecentlyViewed({ slug: product.slug, name: product.name });
+    }
+  }, [product]);
 
   if (!slug) {
     return <p className="mx-auto max-w-6xl px-4 py-16 text-slate-500">Product not found.</p>;
