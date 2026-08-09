@@ -2,7 +2,8 @@
 
 import type { ComponentType } from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import {
   Menu,
@@ -42,9 +43,18 @@ const ICONS: Record<string, ComponentType<{ className?: string; strokeWidth?: nu
 export default function MobileMenu() {
   const [open, setOpen] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const menu = useQuery(api.menu.getMenu, {});
   const { whatsappNumber } = useRegion();
+
+  // The panel is portaled to <body> (see below) so it can't get trapped
+  // inside the sticky header's stacking context — but document.body only
+  // exists once mounted on the client.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   const categories = (menu?.categories ?? []).filter((c) => !c.hidden);
   const info = (menu?.info ?? []).filter((i) => !i.hidden);
@@ -64,7 +74,9 @@ export default function MobileMenu() {
         <Menu className="h-6 w-6" strokeWidth={1.8} />
       </button>
 
-      <AnimatePresence>
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
         {open && (
           <>
             <motion.div
@@ -199,7 +211,9 @@ export default function MobileMenu() {
             </motion.div>
           </>
         )}
-      </AnimatePresence>
+          </AnimatePresence>,
+          document.body
+        )}
     </>
   );
 }
