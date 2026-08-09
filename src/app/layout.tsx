@@ -6,6 +6,7 @@ import { RegionProvider } from "@/context/RegionContext";
 import Header from "@/components/Header";
 import TrustBadges from "@/components/TrustBadges";
 import Footer from "@/components/Footer";
+import LazySection from "@/components/LazySection";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +39,9 @@ export default function RootLayout({
           <RegionProvider>
             <Header />
             <main className="flex-1">{children}</main>
-            <TrustBadges />
+            <LazySection minHeight={260}>
+              <TrustBadges />
+            </LazySection>
             <Footer />
           </RegionProvider>
         </ConvexClientProvider>

@@ -4,11 +4,11 @@ import { X } from "lucide-react";
 import { EMPTY_FILTERS, type FilterState } from "@/lib/filterUrl";
 
 type Chip =
-  | { kind: "list"; key: "brand" | "cpu" | "ram" | "storage" | "display" | "conditionGrade"; label: string; value: string }
+  | { kind: "list"; key: "brand" | "cpu" | "gpu" | "ram" | "storage" | "display" | "conditionGrade"; label: string; value: string }
   | { kind: "inStock" }
   | { kind: "price" };
 
-const LIST_KEYS = ["brand", "cpu", "ram", "storage", "display", "conditionGrade"] as const;
+const LIST_KEYS = ["brand", "cpu", "gpu", "ram", "storage", "display", "conditionGrade"] as const;
 
 export default function ActiveFilterChips({
   value,

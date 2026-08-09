@@ -135,7 +135,15 @@ export function FilterControls({
               />
             );
           case "gpu":
-            return null;
+            return (
+              <CheckboxGroup
+                key={def.key}
+                label={def.label}
+                options={facets.gpus}
+                selected={value.gpu}
+                onChange={(v) => onChange({ ...value, gpu: v })}
+              />
+            );
           case "ram":
             return (
               <CheckboxGroup

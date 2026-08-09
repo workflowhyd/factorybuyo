@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "convex": "^1.43.0",
-    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.28.0",
     "motion": "^13.0.0",

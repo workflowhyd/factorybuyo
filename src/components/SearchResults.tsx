@@ -31,6 +31,7 @@ const SEARCH_FILTER_DEFS: FilterDef[] = [
   { key: "brand", label: "Brand" },
   { key: "price", label: "Price" },
   { key: "cpu", label: "Processor" },
+  { key: "gpu", label: "Graphics" },
   { key: "ram", label: "RAM" },
   { key: "storage", label: "Storage" },
   { key: "conditionGrade", label: "Condition" },
@@ -78,6 +79,7 @@ export default function SearchResults() {
           productIds: matchedIds,
           brand: filters.brand.length ? filters.brand : undefined,
           cpu: filters.cpu.length ? filters.cpu : undefined,
+          gpu: filters.gpu.length ? filters.gpu : undefined,
           ram: filters.ram.length ? filters.ram : undefined,
           storage: filters.storage.length ? filters.storage : undefined,
           conditionGrade: filters.conditionGrade.length ? filters.conditionGrade : undefined,
@@ -159,6 +161,7 @@ export default function SearchResults() {
                 No laptops matched &quot;{q}&quot;
                 {(filters.brand.length ||
                   filters.cpu.length ||
+                  filters.gpu.length ||
                   filters.ram.length ||
                   filters.storage.length ||
                   filters.conditionGrade.length ||

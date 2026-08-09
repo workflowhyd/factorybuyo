@@ -52,6 +52,7 @@ export default function CollectionPage({
     category,
     brand: filters.brand.length ? filters.brand : undefined,
     cpu: filters.cpu.length ? filters.cpu : undefined,
+    gpu: filters.gpu.length ? filters.gpu : undefined,
     ram: filters.ram.length ? filters.ram : undefined,
     storage: filters.storage.length ? filters.storage : undefined,
     display: filters.display.length ? filters.display : undefined,

@@ -1,6 +1,7 @@
 export type FilterState = {
   brand: string[];
   cpu: string[];
+  gpu: string[];
   ram: string[];
   storage: string[];
   display: string[];
@@ -15,6 +16,7 @@ export type SortKey = "bestMatch" | "priceLowHigh" | "priceHighLow" | "newest" |
 export const EMPTY_FILTERS: FilterState = {
   brand: [],
   cpu: [],
+  gpu: [],
   ram: [],
   storage: [],
   display: [],
@@ -24,7 +26,7 @@ export const EMPTY_FILTERS: FilterState = {
   priceMax: null,
 };
 
-const LIST_KEYS = ["brand", "cpu", "ram", "storage", "display", "conditionGrade"] as const;
+const LIST_KEYS = ["brand", "cpu", "gpu", "ram", "storage", "display", "conditionGrade"] as const;
 
 export function filtersFromParams(params: URLSearchParams): FilterState {
   const state = { ...EMPTY_FILTERS };

@@ -17,7 +17,9 @@ export default function Home() {
 
       <CategoryRail />
 
-      <BrandSwitcher />
+      <LazySection minHeight={320}>
+        <BrandSwitcher />
+      </LazySection>
 
       <ProductCarousel
         title="Trending Gaming Laptops"
