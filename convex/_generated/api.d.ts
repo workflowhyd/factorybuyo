@@ -11,6 +11,7 @@
 import type * as about from "../about.js";
 import type * as auth from "../auth.js";
 import type * as contact from "../contact.js";
+import type * as faq from "../faq.js";
 import type * as files from "../files.js";
 import type * as policy from "../policy.js";
 import type * as products from "../products.js";
@@ -29,6 +30,7 @@ declare const fullApi: ApiFromModules<{
   about: typeof about;
   auth: typeof auth;
   contact: typeof contact;
+  faq: typeof faq;
   files: typeof files;
   policy: typeof policy;
   products: typeof products;

@@ -13,6 +13,7 @@ import TrustBadgesPanel from "./TrustBadgesPanel";
 import AboutPanel from "./AboutPanel";
 import ContactPanel from "./ContactPanel";
 import PolicyPanel from "./PolicyPanel";
+import FaqPanel from "./FaqPanel";
 
 // Keep in sync with MAX_PRODUCTS in convex/products.ts — that's the
 // enforced limit, this is just for the UI hint.
@@ -26,7 +27,7 @@ export default function AdminDashboard({
   onLogout: () => void;
 }) {
   const [tab, setTab] = useState<
-    "products" | "testimonials" | "trustBadges" | "about" | "contact" | "policies"
+    "products" | "testimonials" | "trustBadges" | "about" | "contact" | "policies" | "faq"
   >("products");
   const products = useQuery(api.products.list, {});
   const removeProduct = useMutation(api.products.remove);
@@ -148,6 +149,16 @@ export default function AdminDashboard({
         >
           Policy Pages
         </button>
+        <button
+          onClick={() => setTab("faq")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "faq"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          FAQ
+        </button>
       </div>
 
       {tab === "products" && (
@@ -218,6 +229,7 @@ export default function AdminDashboard({
       {tab === "about" && <AboutPanel token={token} />}
       {tab === "contact" && <ContactPanel token={token} />}
       {tab === "policies" && <PolicyPanel token={token} />}
+      {tab === "faq" && <FaqPanel token={token} />}
     </div>
   );
 }

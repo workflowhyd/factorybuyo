@@ -3,6 +3,7 @@ import CategoryRail from "@/components/CategoryRail";
 import ProductCarousel from "@/components/ProductCarousel";
 import WhyFactoryBuyo from "@/components/WhyFactoryBuyo";
 import Testimonials from "@/components/Testimonials";
+import FAQ from "@/components/FAQ";
 import HeroBanner from "@/components/HeroBanner";
 import LazySection from "@/components/LazySection";
 
@@ -41,6 +42,10 @@ export default function Home() {
 
       <LazySection minHeight={420}>
         <Testimonials />
+      </LazySection>
+
+      <LazySection minHeight={420}>
+        <FAQ />
       </LazySection>
     </div>
   );

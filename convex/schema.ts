@@ -88,4 +88,19 @@ export default defineSchema({
     body: v.string(),
     order: v.number(),
   }).index("by_page", ["pageSlug"]),
+
+  faqs: defineTable({
+    question: v.string(),
+    answer: v.string(),
+    order: v.number(),
+    hidden: v.boolean(),
+  }),
+
+  faqSettings: defineTable({
+    heading: v.string(),
+    intro: v.optional(v.string()),
+    defaultOpenId: v.optional(v.id("faqs")),
+    ctaEnabled: v.boolean(),
+    ctaText: v.string(),
+  }),
 });

@@ -1,5 +1,6 @@
 import { internalMutation } from "./_generated/server";
 import { seedProducts } from "./seedData";
+import type { Id } from "./_generated/dataModel";
 
 // Run once after deploying: npx convex run seed:seedProducts
 export const seedProductsMutation = internalMutation({
@@ -271,5 +272,73 @@ export const seedSiteContent = internalMutation({
     }
 
     return results.join(" ");
+  },
+});
+
+// Run once after deploying: npx convex run seed:seedFaq
+export const seedFaq = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    if (await ctx.db.query("faqs").first()) {
+      return "faqs already exist, skipping.";
+    }
+
+    const faqs = [
+      {
+        question: "How do you grade the condition of pre-owned laptops?",
+        answer:
+          "Every pre-owned laptop is graded Good, Very Good or Excellent. Good means visible signs of use with light scratches possible, 80%+ battery health. Very Good means only minor wear visible up close, 85%+ battery health. Excellent means minimal to no visible wear, close to like-new, 90%+ battery health. All three are fully tested and functional — the grade is about cosmetic condition, not whether it works.",
+      },
+      {
+        question: "What testing does every laptop go through?",
+        answer:
+          "A 40-point check covering screen, battery, keyboard, ports and performance, before it's ever listed. This applies to every laptop we sell, new or pre-owned.",
+      },
+      {
+        question: "What warranty do I get?",
+        answer:
+          "Every laptop we sell is covered by a 6-month warranty from the day you collect or receive it, covering functional defects that aren't the result of accidental damage or misuse. Message us on WhatsApp to make a claim.",
+      },
+      {
+        question: "How does delivery work?",
+        answer:
+          "You can collect in person where available, or we'll ship your laptop safely to your door. We currently deliver to customers in India and Singapore — we'll confirm timelines and cost with you on WhatsApp once your order is placed.",
+      },
+      {
+        question: "Can I cancel or return my order?",
+        answer:
+          "Since we don't take payment online, you can cancel a reservation any time before payment at no cost. If a delivered laptop arrives damaged or doesn't match what was agreed, you can refuse it at the door or return it within 48 hours of receipt. See our Cancellation Policy for the full details.",
+      },
+      {
+        question: "How do I pay?",
+        answer:
+          "FactoryBuyo doesn't collect payment online — no card details are needed to reserve a laptop. Once we've confirmed the exact laptop, condition, price and availability with you on WhatsApp, you pay directly at the point of collection or delivery.",
+      },
+      {
+        question: "How do I know if a laptop is still available?",
+        answer:
+          "Pre-owned laptops exist as single units rather than open-ended stock, so availability can change quickly. Message us on WhatsApp with the laptop you're interested in and we'll confirm live availability and price before anything is treated as reserved.",
+      },
+      {
+        question: "What if something goes wrong after I buy?",
+        answer:
+          "You're covered by our 6-month warranty for functional defects. Message us on WhatsApp with your order details and we'll take it from there — no separate claims portal or form.",
+      },
+    ];
+
+    const ids: Id<"faqs">[] = [];
+    for (let i = 0; i < faqs.length; i++) {
+      ids.push(await ctx.db.insert("faqs", { ...faqs[i], order: i, hidden: false }));
+    }
+
+    await ctx.db.insert("faqSettings", {
+      heading: "Still have questions?",
+      intro: "Answers to what customers most often ask before buying.",
+      defaultOpenId: ids[0],
+      ctaEnabled: true,
+      ctaText: "Still stuck? Ask us on WhatsApp",
+    });
+
+    return `Seeded ${faqs.length} FAQs and settings.`;
   },
 });
