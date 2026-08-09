@@ -23,6 +23,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
+import { useRegion } from "@/context/RegionContext";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -43,6 +44,7 @@ export default function MobileMenu() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const pathname = usePathname();
   const menu = useQuery(api.menu.getMenu, {});
+  const { whatsappNumber } = useRegion();
 
   const categories = (menu?.categories ?? []).filter((c) => !c.hidden);
   const info = (menu?.info ?? []).filter((i) => !i.hidden);
@@ -160,7 +162,7 @@ export default function MobileMenu() {
                 })}
 
                 <a
-                  href={buildGeneralWhatsAppLink()}
+                  href={buildGeneralWhatsAppLink(whatsappNumber)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={close}

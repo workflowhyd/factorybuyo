@@ -1,21 +1,26 @@
 "use client";
 
-import { Mail, MessageCircle, Globe, Phone, Clock, MapPin } from "lucide-react";
+import { Mail, MessageCircle, Globe, Phone, Clock, MapPin, Truck } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import PolicyPage from "@/components/PolicyPage";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
+import { useRegion } from "@/context/RegionContext";
 
 export default function ContactPage() {
   const info = useQuery(api.contact.get, {});
+  const { settings, whatsappNumber } = useRegion();
 
   const channels = [
     {
       icon: MessageCircle,
       label: "WhatsApp",
       detail: "Fastest way to reach us — reserve a laptop, ask a question, or get support.",
-      action: { text: "Message us on WhatsApp", href: buildGeneralWhatsAppLink() },
+      action: { text: "Message us on WhatsApp", href: buildGeneralWhatsAppLink(whatsappNumber) },
     },
+    settings?.deliveryNote
+      ? { icon: Truck, label: `Delivery — ${settings.label}`, detail: settings.deliveryNote, action: null }
+      : null,
     {
       icon: Mail,
       label: "Email",

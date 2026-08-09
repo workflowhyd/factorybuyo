@@ -7,10 +7,12 @@ import { api } from "../../convex/_generated/api";
 import Reveal from "@/components/motion/Reveal";
 import WhyFactoryBuyo from "@/components/WhyFactoryBuyo";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
+import { useRegion } from "@/context/RegionContext";
 
 export default function AboutPage() {
   const hero = useQuery(api.about.getHero, {});
   const panels = useQuery(api.about.listPanels, {});
+  const { whatsappNumber } = useRegion();
   const visiblePanels = panels?.filter((p) => !p.hidden);
 
   return (
@@ -74,7 +76,7 @@ export default function AboutPage() {
           <p className="text-sm text-slate-500">
             Have a question we haven&apos;t answered here?{" "}
             <a
-              href={buildGeneralWhatsAppLink()}
+              href={buildGeneralWhatsAppLink(whatsappNumber)}
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold text-brand hover:underline"
@@ -99,7 +101,7 @@ export default function AboutPage() {
               View current deals
             </Link>
             <a
-              href={buildGeneralWhatsAppLink()}
+              href={buildGeneralWhatsAppLink(whatsappNumber)}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-900 transition-all duration-300 hover:border-whatsapp hover:text-whatsapp"

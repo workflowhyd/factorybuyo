@@ -3,7 +3,7 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { discountPercent } from "@/lib/format";
-import { getRegionalPrice } from "@/lib/pricing";
+import { getRegionalPrice, isAvailableInRegion } from "@/lib/pricing";
 import { useRegion } from "@/context/RegionContext";
 import ProductCard from "@/components/ProductCard";
 
@@ -11,6 +11,7 @@ export default function HotDealsPage() {
   const { region } = useRegion();
   const products = useQuery(api.products.list, {});
   const deals = products?.filter((p) => {
+    if (!isAvailableInRegion(p, region)) return false;
     const { price, originalPrice } = getRegionalPrice(p, region);
     return discountPercent(price, originalPrice);
   });

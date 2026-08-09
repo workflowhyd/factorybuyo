@@ -19,8 +19,8 @@ const features = [
     icon: MessageCircle,
   },
   {
-    title: "Pan-India Delivery",
-    desc: "Can't collect in person? We'll ship your laptop safely to your door, anywhere in India.",
+    title: "Doorstep Delivery",
+    desc: "Can't collect in person? We'll ship your laptop safely to your door, in India or Singapore.",
     icon: Truck,
   },
 ];

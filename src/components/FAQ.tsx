@@ -6,10 +6,12 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import Reveal from "@/components/motion/Reveal";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
+import { useRegion } from "@/context/RegionContext";
 
 export default function FAQ() {
   const faqs = useQuery(api.faq.list, {});
   const settings = useQuery(api.faq.getSettings, {});
+  const { whatsappNumber } = useRegion();
   const visible = faqs?.filter((f) => !f.hidden);
 
   // null = no explicit choice yet, fall back to the configured default (or
@@ -120,7 +122,7 @@ export default function FAQ() {
       {settings?.ctaEnabled && (
         <p className="mt-8 text-center text-sm text-slate-500">
           <a
-            href={buildGeneralWhatsAppLink()}
+            href={buildGeneralWhatsAppLink(whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold text-brand hover:underline"

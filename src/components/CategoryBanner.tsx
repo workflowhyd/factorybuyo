@@ -20,6 +20,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
 import RegionSwitcher from "@/components/RegionSwitcher";
+import { useRegion } from "@/context/RegionContext";
 
 const ICONS: Record<string, ComponentType<{ className?: string; strokeWidth?: number }>> = {
   Gamepad2,
@@ -36,6 +37,7 @@ const ICONS: Record<string, ComponentType<{ className?: string; strokeWidth?: nu
 export default function CategoryBanner({ scrolled = false }: { scrolled?: boolean }) {
   const pathname = usePathname();
   const menu = useQuery(api.menu.getMenu, {});
+  const { whatsappNumber } = useRegion();
   const [open, setOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -168,7 +170,7 @@ export default function CategoryBanner({ scrolled = false }: { scrolled?: boolea
         </div>
 
         <a
-          href={buildGeneralWhatsAppLink()}
+          href={buildGeneralWhatsAppLink(whatsappNumber)}
           target="_blank"
           rel="noopener noreferrer"
           className="hidden text-brand-purple hover:underline md:ml-auto md:block"

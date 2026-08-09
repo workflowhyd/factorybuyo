@@ -17,6 +17,7 @@ import type * as files from "../files.js";
 import type * as menu from "../menu.js";
 import type * as policy from "../policy.js";
 import type * as products from "../products.js";
+import type * as regions from "../regions.js";
 import type * as seed from "../seed.js";
 import type * as seedData from "../seedData.js";
 import type * as testimonials from "../testimonials.js";
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   menu: typeof menu;
   policy: typeof policy;
   products: typeof products;
+  regions: typeof regions;
   seed: typeof seed;
   seedData: typeof seedData;
   testimonials: typeof testimonials;

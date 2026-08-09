@@ -2,13 +2,17 @@
 
 import { useRegion } from "@/context/RegionContext";
 
-const regions = [
+const FALLBACK = [
   { code: "IN" as const, label: "🇮🇳 INR" },
   { code: "SG" as const, label: "🇸🇬 SGD" },
 ];
 
 export default function RegionSwitcher({ className }: { className?: string }) {
-  const { region, setRegion } = useRegion();
+  const { region, setRegion, allSettings } = useRegion();
+
+  const regions = allSettings
+    ? allSettings.filter((s) => s.enabled).map((s) => ({ code: s.code, label: `${s.flag} ${s.label}` }))
+    : FALLBACK;
 
   return (
     <div

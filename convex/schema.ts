@@ -140,4 +140,15 @@ export default defineSchema({
     href: v.string(),
     order: v.number(),
   }).index("by_parent", ["parentId"]),
+
+  regionSettings: defineTable({
+    code: v.union(v.literal("IN"), v.literal("SG")),
+    label: v.string(),
+    flag: v.string(),
+    whatsappNumber: v.optional(v.string()),
+    bannerText: v.string(),
+    deliveryNote: v.optional(v.string()),
+    marketNotice: v.optional(v.string()),
+    enabled: v.boolean(),
+  }).index("by_code", ["code"]),
 });

@@ -6,12 +6,13 @@ import { Heart, Eye } from "lucide-react";
 import { motion } from "motion/react";
 import StorageImage from "@/components/StorageImage";
 import { formatPrice, discountPercent } from "@/lib/format";
-import { getRegionalPrice } from "@/lib/pricing";
+import { getRegionalPrice, isAvailableInRegion } from "@/lib/pricing";
 import { useRegion } from "@/context/RegionContext";
 import type { Doc } from "../../convex/_generated/dataModel";
 
 export default function ProductCard({ product }: { product: Doc<"products"> }) {
   const { region } = useRegion();
+  const available = isAvailableInRegion(product, region);
   const { price, originalPrice } = getRegionalPrice(product, region);
   const discount = discountPercent(price, originalPrice);
   const image = product.images[0];
@@ -85,16 +86,22 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
           <p className="mt-1 text-[13px] font-semibold leading-snug text-slate-900 line-clamp-1 sm:mt-1.5 sm:text-sm sm:line-clamp-2">
             {product.name}
           </p>
-          <div className="mt-1.5 flex items-baseline gap-1.5 sm:mt-2.5 sm:gap-2">
-            <span className="text-sm font-bold text-slate-900 sm:text-base">
-              {formatPrice(price, region)}
-            </span>
-            {originalPrice && (
-              <span className="text-[11px] text-slate-400 line-through sm:text-xs">
-                {formatPrice(originalPrice, region)}
+          {available ? (
+            <div className="mt-1.5 flex items-baseline gap-1.5 sm:mt-2.5 sm:gap-2">
+              <span className="text-sm font-bold text-slate-900 sm:text-base">
+                {formatPrice(price, region)}
               </span>
-            )}
-          </div>
+              {originalPrice && (
+                <span className="text-[11px] text-slate-400 line-through sm:text-xs">
+                  {formatPrice(originalPrice, region)}
+                </span>
+              )}
+            </div>
+          ) : (
+            <p className="mt-1.5 text-xs font-semibold text-slate-400 sm:mt-2.5">
+              Not available in this region
+            </p>
+          )}
         </div>
       </div>
     </Link>

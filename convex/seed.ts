@@ -432,3 +432,36 @@ export const seedMenu = internalMutation({
     return `Seeded ${categories.length} categories and ${info.length} info links.`;
   },
 });
+
+// Run once after deploying: npx convex run seed:seedRegions
+export const seedRegions = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    if (await ctx.db.query("regionSettings").first()) {
+      return "regionSettings already exist, skipping.";
+    }
+
+    const bannerText =
+      "Reserve your laptop online, pay & collect at pickup — no card details needed.";
+
+    await ctx.db.insert("regionSettings", {
+      code: "IN",
+      label: "INR",
+      flag: "🇮🇳",
+      bannerText,
+      deliveryNote: "Shipped safely to your door, anywhere in India.",
+      enabled: true,
+    });
+
+    await ctx.db.insert("regionSettings", {
+      code: "SG",
+      label: "SGD",
+      flag: "🇸🇬",
+      bannerText,
+      deliveryNote: "Shipped safely to your door, anywhere in Singapore.",
+      enabled: true,
+    });
+
+    return "Seeded 2 regions.";
+  },
+});

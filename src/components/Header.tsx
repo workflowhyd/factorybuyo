@@ -9,6 +9,7 @@ import { buildGeneralWhatsAppLink } from "@/lib/whatsapp";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import CategoryBanner from "@/components/CategoryBanner";
 import MobileMenu from "@/components/MobileMenu";
+import { useRegion } from "@/context/RegionContext";
 
 function SearchBar({ className }: { className?: string }) {
   const router = useRouter();
@@ -44,6 +45,7 @@ function SearchBar({ className }: { className?: string }) {
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const { settings, whatsappNumber } = useRegion();
 
   useEffect(() => {
     let ticking = false;
@@ -76,7 +78,7 @@ export default function Header() {
           scrolled ? "max-h-0 py-0 opacity-0" : "max-h-12 py-2 opacity-100"
         }`}
       >
-        Reserve your laptop online, pay &amp; collect at pickup — no card details needed.
+        {settings?.bannerText ?? "Reserve your laptop online, pay & collect at pickup — no card details needed."}
       </div>
 
       <div
@@ -110,7 +112,7 @@ export default function Header() {
           <SearchBar className="flex flex-1 max-w-md" />
 
           <a
-            href={buildGeneralWhatsAppLink()}
+            href={buildGeneralWhatsAppLink(whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
@@ -139,7 +141,7 @@ export default function Header() {
           </Link>
 
           <a
-            href={buildGeneralWhatsAppLink()}
+            href={buildGeneralWhatsAppLink(whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
