@@ -11,6 +11,7 @@ const MAX_TESTIMONIALS = 10;
 
 export default function TestimonialsPanel({ token }: { token: string }) {
   const testimonials = useQuery(api.testimonials.list, {});
+  const products = useQuery(api.products.list, {});
   const addTestimonial = useMutation(api.testimonials.add);
   const removeTestimonial = useMutation(api.testimonials.remove);
   const testimonialCount = testimonials?.length ?? 0;
@@ -19,6 +20,7 @@ export default function TestimonialsPanel({ token }: { token: string }) {
   const [name, setName] = useState("");
   const [quote, setQuote] = useState("");
   const [rating, setRating] = useState(5);
+  const [productId, setProductId] = useState<Id<"products"> | "">("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -36,10 +38,17 @@ export default function TestimonialsPanel({ token }: { token: string }) {
     }
     setSaving(true);
     try {
-      await addTestimonial({ token, name: name.trim(), quote: quote.trim(), rating });
+      await addTestimonial({
+        token,
+        name: name.trim(),
+        quote: quote.trim(),
+        rating,
+        productId: productId || undefined,
+      });
       setName("");
       setQuote("");
       setRating(5);
+      setProductId("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save testimonial.");
     } finally {
@@ -113,6 +122,24 @@ export default function TestimonialsPanel({ token }: { token: string }) {
           />
         </label>
 
+        <label className="block text-sm">
+          <span className="mb-1 block font-medium text-slate-700">
+            Link to a product <span className="text-slate-400">(optional — shows this review on that product&apos;s page too)</span>
+          </span>
+          <select
+            value={productId}
+            onChange={(e) => setProductId(e.target.value as Id<"products"> | "")}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          >
+            <option value="">Not linked to a specific product</option>
+            {products?.map((p) => (
+              <option key={p._id} value={p._id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
         {error && <p className="text-sm text-red-600">{error}</p>}
 
         <button
@@ -141,6 +168,11 @@ export default function TestimonialsPanel({ token }: { token: string }) {
                   {t.name} · {"★".repeat(t.rating)}
                   {"☆".repeat(5 - t.rating)}
                 </p>
+                {t.productId && (
+                  <p className="text-xs text-brand">
+                    On {products?.find((p) => p._id === t.productId)?.name ?? "(deleted product)"}
+                  </p>
+                )}
                 <p className="mt-1 text-xs text-slate-500 line-clamp-2">{t.quote}</p>
               </div>
               <button

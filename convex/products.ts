@@ -14,6 +14,21 @@ const conditionValidator = v.optional(
   v.union(v.literal("Good"), v.literal("Very Good"), v.literal("Excellent"))
 );
 
+const variantValidator = v.object({
+  id: v.string(),
+  label: v.string(),
+  sku: v.string(),
+  cpu: v.optional(v.string()),
+  ram: v.optional(v.string()),
+  storage: v.optional(v.string()),
+  os: v.optional(v.string()),
+  price: v.number(),
+  originalPrice: v.optional(v.number()),
+  priceSGD: v.optional(v.number()),
+  originalPriceSGD: v.optional(v.number()),
+  inStock: v.boolean(),
+});
+
 export const MAX_PRODUCTS = 20;
 
 export const list = query({
@@ -41,6 +56,25 @@ export const getBySlug = query({
   },
 });
 
+export const getSimilar = query({
+  args: { productId: v.id("products"), limit: v.optional(v.number()) },
+  handler: async (ctx, { productId, limit }) => {
+    const product = await ctx.db.get(productId);
+    if (!product) return [];
+    const sameCategory = await ctx.db
+      .query("products")
+      .withIndex("by_category", (q) => q.eq("category", product.category))
+      .collect();
+    const others = sameCategory.filter((p) => p._id !== productId);
+    others.sort((a, b) => {
+      const aSameBrand = a.brand === product.brand ? 1 : 0;
+      const bSameBrand = b.brand === product.brand ? 1 : 0;
+      return bSameBrand - aSameBrand || b.createdAt - a.createdAt;
+    });
+    return others.slice(0, limit ?? 4);
+  },
+});
+
 export const add = mutation({
   args: {
     token: v.string(),
@@ -57,6 +91,10 @@ export const add = mutation({
     images: v.array(v.string()),
     featured: v.boolean(),
     inStock: v.boolean(),
+    sku: v.optional(v.string()),
+    highlights: v.optional(v.array(v.string())),
+    included: v.optional(v.array(v.string())),
+    variants: v.optional(v.array(variantValidator)),
   },
   handler: async (ctx, args) => {
     await requireAdmin(ctx, args.token);
@@ -80,6 +118,10 @@ export const add = mutation({
       images: args.images,
       featured: args.featured,
       inStock: args.inStock,
+      sku: args.sku,
+      highlights: args.highlights,
+      included: args.included,
+      variants: args.variants,
       createdAt: Date.now(),
     });
   },
@@ -102,6 +144,10 @@ export const update = mutation({
     images: v.array(v.string()),
     featured: v.boolean(),
     inStock: v.boolean(),
+    sku: v.optional(v.string()),
+    highlights: v.optional(v.array(v.string())),
+    included: v.optional(v.array(v.string())),
+    variants: v.optional(v.array(variantValidator)),
   },
   handler: async (ctx, args) => {
     await requireAdmin(ctx, args.token);
@@ -119,6 +165,10 @@ export const update = mutation({
       images: args.images,
       featured: args.featured,
       inStock: args.inStock,
+      sku: args.sku,
+      highlights: args.highlights,
+      included: args.included,
+      variants: args.variants,
     });
   },
 });

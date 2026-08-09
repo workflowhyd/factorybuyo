@@ -25,6 +25,27 @@ export default defineSchema({
     featured: v.boolean(),
     inStock: v.boolean(),
     createdAt: v.number(),
+    sku: v.optional(v.string()),
+    highlights: v.optional(v.array(v.string())),
+    included: v.optional(v.array(v.string())),
+    variants: v.optional(
+      v.array(
+        v.object({
+          id: v.string(),
+          label: v.string(),
+          sku: v.string(),
+          cpu: v.optional(v.string()),
+          ram: v.optional(v.string()),
+          storage: v.optional(v.string()),
+          os: v.optional(v.string()),
+          price: v.number(),
+          originalPrice: v.optional(v.number()),
+          priceSGD: v.optional(v.number()),
+          originalPriceSGD: v.optional(v.number()),
+          inStock: v.boolean(),
+        })
+      )
+    ),
   })
     .index("by_slug", ["slug"])
     .index("by_category", ["category"]),
@@ -39,7 +60,8 @@ export default defineSchema({
     quote: v.string(),
     rating: v.number(),
     createdAt: v.number(),
-  }),
+    productId: v.optional(v.id("products")),
+  }).index("by_product", ["productId"]),
 
   trustBadges: defineTable({
     icon: v.string(),
@@ -151,4 +173,24 @@ export default defineSchema({
     marketNotice: v.optional(v.string()),
     enabled: v.boolean(),
   }).index("by_code", ["code"]),
+
+  productQuestions: defineTable({
+    productId: v.id("products"),
+    name: v.string(),
+    question: v.string(),
+    answer: v.optional(v.string()),
+    status: v.union(v.literal("pending"), v.literal("published"), v.literal("hidden")),
+    createdAt: v.number(),
+  }).index("by_product", ["productId"]),
+
+  productDetailSettings: defineTable({
+    showHighlights: v.boolean(),
+    showSpecs: v.boolean(),
+    showCondition: v.boolean(),
+    showIncluded: v.boolean(),
+    showWarranty: v.boolean(),
+    showReviews: v.boolean(),
+    showQA: v.boolean(),
+    showCompare: v.boolean(),
+  }),
 });

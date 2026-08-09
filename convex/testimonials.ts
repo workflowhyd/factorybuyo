@@ -12,14 +12,26 @@ export const list = query({
   },
 });
 
+export const listForProduct = query({
+  args: { productId: v.id("products") },
+  handler: async (ctx, { productId }) => {
+    const testimonials = await ctx.db
+      .query("testimonials")
+      .withIndex("by_product", (q) => q.eq("productId", productId))
+      .collect();
+    return testimonials.sort((a, b) => b.createdAt - a.createdAt);
+  },
+});
+
 export const add = mutation({
   args: {
     token: v.string(),
     name: v.string(),
     quote: v.string(),
     rating: v.number(),
+    productId: v.optional(v.id("products")),
   },
-  handler: async (ctx, { token, name, quote, rating }) => {
+  handler: async (ctx, { token, name, quote, rating, productId }) => {
     await requireAdmin(ctx, token);
     const count = (await ctx.db.query("testimonials").collect()).length;
     if (count >= MAX_TESTIMONIALS) {
@@ -31,6 +43,7 @@ export const add = mutation({
       name,
       quote,
       rating: Math.min(5, Math.max(1, Math.round(rating))),
+      productId,
       createdAt: Date.now(),
     });
   },

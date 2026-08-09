@@ -17,6 +17,8 @@ import FaqPanel from "./FaqPanel";
 import BrandsPanel from "./BrandsPanel";
 import MenuPanel from "./MenuPanel";
 import RegionsPanel from "./RegionsPanel";
+import ProductQAPanel from "./ProductQAPanel";
+import ProductDetailSettingsPanel from "./ProductDetailSettingsPanel";
 
 // Keep in sync with MAX_PRODUCTS in convex/products.ts — that's the
 // enforced limit, this is just for the UI hint.
@@ -40,6 +42,8 @@ export default function AdminDashboard({
     | "brands"
     | "menu"
     | "regions"
+    | "productQA"
+    | "productDetail"
   >("products");
   const products = useQuery(api.products.list, {});
   const removeProduct = useMutation(api.products.remove);
@@ -201,6 +205,26 @@ export default function AdminDashboard({
         >
           Regions
         </button>
+        <button
+          onClick={() => setTab("productQA")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "productQA"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Product Q&amp;A
+        </button>
+        <button
+          onClick={() => setTab("productDetail")}
+          className={`px-4 py-2 text-sm font-semibold ${
+            tab === "productDetail"
+              ? "border-b-2 border-brand text-slate-900"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Product Page
+        </button>
       </div>
 
       {tab === "products" && (
@@ -275,6 +299,8 @@ export default function AdminDashboard({
       {tab === "brands" && <BrandsPanel token={token} />}
       {tab === "menu" && <MenuPanel token={token} />}
       {tab === "regions" && <RegionsPanel token={token} />}
+      {tab === "productQA" && <ProductQAPanel token={token} />}
+      {tab === "productDetail" && <ProductDetailSettingsPanel token={token} />}
     </div>
   );
 }

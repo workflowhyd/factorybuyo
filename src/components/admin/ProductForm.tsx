@@ -8,6 +8,21 @@ import { api } from "../../../convex/_generated/api";
 import type { Doc } from "../../../convex/_generated/dataModel";
 import { slugify } from "@/lib/slugify";
 
+type VariantFormState = {
+  id: string;
+  label: string;
+  sku: string;
+  cpu: string;
+  ram: string;
+  storage: string;
+  os: string;
+  price: string;
+  originalPrice: string;
+  priceSGD: string;
+  originalPriceSGD: string;
+  inStock: boolean;
+};
+
 type FormState = {
   slug: string;
   name: string;
@@ -26,6 +41,10 @@ type FormState = {
   images: string[];
   featured: boolean;
   inStock: boolean;
+  sku: string;
+  highlightsText: string;
+  includedText: string;
+  variants: VariantFormState[];
 };
 
 function toFormState(product?: Doc<"products">): FormState {
@@ -47,6 +66,23 @@ function toFormState(product?: Doc<"products">): FormState {
     images: product?.images ?? [],
     featured: product?.featured ?? false,
     inStock: product?.inStock ?? true,
+    sku: product?.sku ?? "",
+    highlightsText: product?.highlights?.join("\n") ?? "",
+    includedText: product?.included?.join("\n") ?? "",
+    variants: (product?.variants ?? []).map((v) => ({
+      id: v.id,
+      label: v.label,
+      sku: v.sku,
+      cpu: v.cpu ?? "",
+      ram: v.ram ?? "",
+      storage: v.storage ?? "",
+      os: v.os ?? "",
+      price: String(v.price),
+      originalPrice: v.originalPrice ? String(v.originalPrice) : "",
+      priceSGD: v.priceSGD ? String(v.priceSGD) : "",
+      originalPriceSGD: v.originalPriceSGD ? String(v.originalPriceSGD) : "",
+      inStock: v.inStock,
+    })),
   };
 }
 
@@ -107,6 +143,40 @@ export default function ProductForm({
     setForm((prev) => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
   }
 
+  function addVariant() {
+    setForm((prev) => ({
+      ...prev,
+      variants: [
+        ...prev.variants,
+        {
+          id: crypto.randomUUID(),
+          label: "",
+          sku: "",
+          cpu: "",
+          ram: "",
+          storage: "",
+          os: "",
+          price: prev.price,
+          originalPrice: "",
+          priceSGD: "",
+          originalPriceSGD: "",
+          inStock: true,
+        },
+      ],
+    }));
+  }
+
+  function updateVariant(id: string, patch: Partial<VariantFormState>) {
+    setForm((prev) => ({
+      ...prev,
+      variants: prev.variants.map((v) => (v.id === id ? { ...v, ...patch } : v)),
+    }));
+  }
+
+  function removeVariant(id: string) {
+    setForm((prev) => ({ ...prev, variants: prev.variants.filter((v) => v.id !== id) }));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -118,6 +188,12 @@ export default function ProductForm({
     if (form.images.length === 0) {
       setError("Add at least one photo.");
       return;
+    }
+    for (const v of form.variants) {
+      if (!v.label.trim() || !v.sku.trim() || !v.price) {
+        setError("Every configuration needs a label, SKU and price.");
+        return;
+      }
     }
 
     setSaving(true);
@@ -146,6 +222,29 @@ export default function ProductForm({
         images: form.images,
         featured: form.featured,
         inStock: form.inStock,
+        sku: form.sku.trim() || undefined,
+        highlights: form.highlightsText.trim()
+          ? form.highlightsText.split("\n").map((s) => s.trim()).filter(Boolean)
+          : undefined,
+        included: form.includedText.trim()
+          ? form.includedText.split("\n").map((s) => s.trim()).filter(Boolean)
+          : undefined,
+        variants: form.variants.length
+          ? form.variants.map((v) => ({
+              id: v.id,
+              label: v.label.trim(),
+              sku: v.sku.trim(),
+              cpu: v.cpu.trim() || undefined,
+              ram: v.ram.trim() || undefined,
+              storage: v.storage.trim() || undefined,
+              os: v.os.trim() || undefined,
+              price: Number(v.price),
+              originalPrice: v.originalPrice ? Number(v.originalPrice) : undefined,
+              priceSGD: v.priceSGD ? Number(v.priceSGD) : undefined,
+              originalPriceSGD: v.originalPriceSGD ? Number(v.originalPriceSGD) : undefined,
+              inStock: v.inStock,
+            }))
+          : undefined,
       };
 
       if (product) {
@@ -209,6 +308,17 @@ export default function ProductForm({
           <input
             value={form.brand}
             onChange={(e) => update("brand", e.target.value)}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          />
+        </label>
+
+        <label className="text-sm">
+          <span className="mb-1 block font-medium text-slate-700">
+            SKU <span className="text-slate-400">(optional, used when there&apos;s no configuration list below)</span>
+          </span>
+          <input
+            value={form.sku}
+            onChange={(e) => update("sku", e.target.value)}
             className="w-full rounded-lg border border-slate-300 px-3 py-2"
           />
         </label>
@@ -320,6 +430,140 @@ export default function ProductForm({
             className="w-full rounded-lg border border-slate-300 px-3 py-2"
           />
         </label>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 border-t border-slate-100 pt-4 sm:grid-cols-2">
+        <label className="text-sm">
+          <span className="mb-1 block font-medium text-slate-700">
+            Highlights <span className="text-slate-400">(one per line, optional)</span>
+          </span>
+          <textarea
+            value={form.highlightsText}
+            onChange={(e) => update("highlightsText", e.target.value)}
+            rows={3}
+            placeholder={"165Hz display\nRTX 4060 graphics"}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          />
+        </label>
+        <label className="text-sm">
+          <span className="mb-1 block font-medium text-slate-700">
+            What&apos;s included <span className="text-slate-400">(one per line, optional)</span>
+          </span>
+          <textarea
+            value={form.includedText}
+            onChange={(e) => update("includedText", e.target.value)}
+            rows={3}
+            placeholder={"Laptop\nCharger\nOriginal box"}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          />
+        </label>
+      </div>
+
+      <div className="border-t border-slate-100 pt-4">
+        <div className="mb-2 flex items-center justify-between">
+          <span className="text-sm font-medium text-slate-700">
+            Configurations <span className="text-slate-400">(optional — leave empty for a single-SKU product)</span>
+          </span>
+          <button
+            type="button"
+            onClick={addVariant}
+            className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700"
+          >
+            + Add configuration
+          </button>
+        </div>
+        {form.variants.length > 0 && (
+          <div className="space-y-3">
+            {form.variants.map((v) => (
+              <div key={v.id} className="rounded-lg border border-slate-200 p-3">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-slate-500">Configuration</span>
+                  <button
+                    type="button"
+                    onClick={() => removeVariant(v.id)}
+                    className="text-xs font-semibold text-red-600"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  <input
+                    value={v.label}
+                    onChange={(e) => updateVariant(v.id, { label: e.target.value })}
+                    placeholder="Label (e.g. 16GB / 512GB)"
+                    className="col-span-2 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs sm:col-span-2"
+                  />
+                  <input
+                    value={v.sku}
+                    onChange={(e) => updateVariant(v.id, { sku: e.target.value })}
+                    placeholder="SKU"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <input
+                    value={v.os}
+                    onChange={(e) => updateVariant(v.id, { os: e.target.value })}
+                    placeholder="OS (optional)"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <input
+                    value={v.cpu}
+                    onChange={(e) => updateVariant(v.id, { cpu: e.target.value })}
+                    placeholder="Processor override"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <input
+                    value={v.ram}
+                    onChange={(e) => updateVariant(v.id, { ram: e.target.value })}
+                    placeholder="RAM override"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <input
+                    value={v.storage}
+                    onChange={(e) => updateVariant(v.id, { storage: e.target.value })}
+                    placeholder="Storage override"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <label className="flex items-center gap-1.5 text-xs text-slate-600">
+                    <input
+                      type="checkbox"
+                      checked={v.inStock}
+                      onChange={(e) => updateVariant(v.id, { inStock: e.target.checked })}
+                    />
+                    In stock
+                  </label>
+                  <input
+                    type="number"
+                    value={v.price}
+                    onChange={(e) => updateVariant(v.id, { price: e.target.value })}
+                    placeholder="Price (₹)"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <input
+                    type="number"
+                    value={v.originalPrice}
+                    onChange={(e) => updateVariant(v.id, { originalPrice: e.target.value })}
+                    placeholder="Original price (₹)"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <input
+                    type="number"
+                    value={v.priceSGD}
+                    onChange={(e) => updateVariant(v.id, { priceSGD: e.target.value })}
+                    placeholder="Price (S$)"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                  <input
+                    type="number"
+                    value={v.originalPriceSGD}
+                    onChange={(e) => updateVariant(v.id, { originalPriceSGD: e.target.value })}
+                    placeholder="Original price (S$)"
+                    className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="border-t border-slate-100 pt-4">
