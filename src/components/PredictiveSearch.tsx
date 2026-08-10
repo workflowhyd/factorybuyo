@@ -85,7 +85,7 @@ export default function PredictiveSearch({ className }: { className?: string }) 
                   {recent.map((r) => (
                     <Link
                       key={r.slug}
-                      href={`/product?slug=${r.slug}`}
+                      href={`/product/${r.slug}`}
                       onClick={() => setOpen(false)}
                       className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-200"
                     >
@@ -190,7 +190,7 @@ export default function PredictiveSearch({ className }: { className?: string }) 
                     return (
                       <Link
                         key={p._id}
-                        href={`/product?slug=${p.slug}`}
+                        href={`/product/${p.slug}`}
                         onClick={() => setOpen(false)}
                         className="flex items-center gap-3 rounded-xl p-2 hover:bg-slate-50"
                       >

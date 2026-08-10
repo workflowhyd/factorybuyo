@@ -37,7 +37,7 @@ export function buildReserveWhatsAppLink({
     lines.push(`SKU: ${sku}`);
   }
   if (typeof window !== "undefined") {
-    lines.push(`Link: ${window.location.origin}/product?slug=${product.slug}`);
+    lines.push(`Link: ${window.location.origin}/product/${product.slug}`);
   }
   lines.push(``, `Please let me know availability and next steps.`);
 

@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import CollectionPage from "@/components/CollectionPage";
+
+export const metadata: Metadata = {
+  title: "Gaming Laptops",
+  description:
+    "Trending gaming laptops hand-picked for the Indian market — powerful GPUs, high refresh-rate displays, certified and tested before listing.",
+  alternates: { canonical: "/gaming-laptops" },
+};
 
 export default function GamingLaptopsPage() {
   return (

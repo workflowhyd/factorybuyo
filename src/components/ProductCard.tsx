@@ -20,7 +20,7 @@ export default function ProductCard({ product }: { product: Doc<"products"> }) {
 
   return (
     <Link
-      href={`/product?slug=${product.slug}`}
+      href={`/product/${product.slug}`}
       className="group block rounded-2xl shadow-[0_2px_10px_-4px_rgba(15,23,42,0.1)] ring-1 ring-slate-100 transition-all duration-400 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_48px_-18px_rgba(58,14,109,0.28)] hover:ring-slate-200"
     >
       <div className="overflow-hidden rounded-2xl bg-white">

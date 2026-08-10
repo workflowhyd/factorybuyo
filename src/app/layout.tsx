@@ -18,10 +18,41 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://factorybuyo.com";
+const SITE_NAME = "FactoryBuyo";
+const DEFAULT_DESCRIPTION =
+  "Trending gaming laptops and certified pre-owned laptops for India and Singapore. Reserve online, confirm on WhatsApp — no card details needed.";
+
 export const metadata: Metadata = {
-  title: "FactoryBuyo — Gaming & Pre-Owned Laptops",
-  description:
-    "Trending gaming laptops and certified pre-owned laptops for the Indian market. Reserve online, confirm on WhatsApp.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — Gaming & Pre-Owned Laptops`,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: DEFAULT_DESCRIPTION,
+  openGraph: {
+    siteName: SITE_NAME,
+    type: "website",
+    locale: "en_IN",
+    url: SITE_URL,
+    title: `${SITE_NAME} — Gaming & Pre-Owned Laptops`,
+    description: DEFAULT_DESCRIPTION,
+    images: [{ url: "/logo.png" }],
+  },
+  twitter: {
+    card: "summary",
+    title: `${SITE_NAME} — Gaming & Pre-Owned Laptops`,
+    description: DEFAULT_DESCRIPTION,
+    images: ["/logo.png"],
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
 };
 
 export default function RootLayout({
@@ -35,6 +66,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <ConvexClientProvider>
           <RegionProvider>
             <Header />

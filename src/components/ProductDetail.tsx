@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import StorageImage from "@/components/StorageImage";
 import { useMutation, useQuery } from "convex/react";
 import { Check, Star, MessageCircleQuestion } from "lucide-react";
@@ -102,10 +101,8 @@ function AskQuestionForm({ productId }: { productId: Doc<"products">["_id"] }) {
   );
 }
 
-export default function ProductDetail() {
-  const searchParams = useSearchParams();
-  const slug = searchParams.get("slug") ?? "";
-  const product = useQuery(api.products.getBySlug, slug ? { slug } : "skip");
+export default function ProductDetail({ slug }: { slug: string }) {
+  const product = useQuery(api.products.getBySlug, { slug });
   const settings = useQuery(api.productDetailSettings.get, {});
   const [activeImage, setActiveImage] = useState(0);
   const { region } = useRegion();
@@ -130,10 +127,6 @@ export default function ProductDetail() {
       addRecentlyViewed({ slug: product.slug, name: product.name });
     }
   }, [product]);
-
-  if (!slug) {
-    return <p className="mx-auto max-w-6xl px-4 py-16 text-slate-500">Product not found.</p>;
-  }
 
   if (product === undefined) {
     return (
@@ -492,7 +485,7 @@ export default function ProductDetail() {
                     return (
                       <tr key={p._id} className="border-t border-slate-100">
                         <td className="py-2.5 pr-4">
-                          <Link href={`/product?slug=${p.slug}`} className="font-medium text-brand hover:underline">
+                          <Link href={`/product/${p.slug}`} className="font-medium text-brand hover:underline">
                             {p.name}
                           </Link>
                         </td>

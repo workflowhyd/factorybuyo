@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import CollectionPage from "@/components/CollectionPage";
+
+export const metadata: Metadata = {
+  title: "Certified Pre-Owned Laptops",
+  description:
+    "Business-grade laptops, tested and graded (Good / Very Good / Excellent), at a fraction of the price of new. 6-month warranty on every unit.",
+  alternates: { canonical: "/preowned-laptops" },
+};
 
 export default function PreOwnedLaptopsPage() {
   return (
