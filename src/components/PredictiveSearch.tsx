@@ -253,7 +253,7 @@ export default function PredictiveSearch({ className }: { className?: string }) 
           {/* Desktop: small dropdown anchored to the search bar above (stays
               inline — it only needs to sit near the input, not escape the
               header). */}
-          <div className="absolute inset-x-0 top-full z-40 mt-2 hidden max-h-[70vh] overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_30px_60px_-20px_rgba(15,23,42,0.25)] sm:block">
+          <div className="absolute left-0 top-full z-40 mt-2 hidden max-h-[70vh] w-[min(640px,90vw)] overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_30px_60px_-20px_rgba(15,23,42,0.25)] sm:block">
             {renderPanelBody()}
           </div>
 
